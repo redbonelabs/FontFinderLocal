@@ -68,6 +68,8 @@ def match(faces, processed, request, rasterizer, cancel=None, progress=lambda **
     warnings=list(processed.warnings)
     if not results: warnings.append("No eligible fonts rendered this exact text. Check the text, font coverage, and catalog.")
     elif results[0]["score"] < 65: warnings.append("No strong geometric match. Check the crop, supplied text, processing, or whether the original font is available.")
+    if results and any(r["family"]!=results[0]["family"] and results[0]["score"]-r["score"]<2 for r in results[1:5]):
+        warnings.append("Several different families have nearly equal scores. Inspect more letters and compare the shapes; the top rank is not proof of identity.")
     if len([c for c in request.text if not c.isspace()])<3:
         warnings.append("Very short text may not distinguish similar typefaces; compare more letters when possible.")
     if not segmentation(processed.mask,request.text):

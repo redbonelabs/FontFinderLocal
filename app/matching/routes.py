@@ -5,6 +5,9 @@ from .images import MAX_UPLOAD,ImageError,png_bytes
 from .models import ProcessRequest,MatchRequest,CompareRequest
 from .comparison import comparison_image,candidate_image
 from .raster import RenderError
+from .metrics import detailed
+from .comparison import selected_reference
+from ..rendering import FontUnavailable
 
 
 def router(service):
@@ -12,7 +15,7 @@ def router(service):
 
     def guarded(action):
         try: return action()
-        except (ImageError,RenderError) as exc: raise HTTPException(422,str(exc)) from exc
+        except (ImageError,RenderError,FontUnavailable) as exc: raise HTTPException(422,str(exc)) from exc
 
     @routes.post("/images")
     async def upload(request:Request):
@@ -72,5 +75,18 @@ def router(service):
             raster=service.rasterizer.render(face,job.request.text,tracking=tracking,coordinates=result["coordinates"])
             return png_bytes(comparison_image(job.processed,result,raster,body.alignment))
         return Response(guarded(make),media_type="image/png",headers={"Content-Disposition":"inline; filename=font-comparison.png"})
+
+    @routes.post("/jobs/{job_id}/auto-align")
+    def auto_align(job_id:str,body:CompareRequest):
+        def calculate():
+            job,result,face=service.result(job_id,body.font_id)
+            tracking=result["tracking"] if body.alignment.tracking is None else body.alignment.tracking
+            raster=service.rasterizer.render(face,job.request.text,tracking=tracking,coordinates=result["coordinates"])
+            _,_,found=detailed(selected_reference(job.processed,result),raster.mask,job.request.text,job.request.sensitivity)
+            original=result["alignment"]
+            return {"x":found["x"]-original["x"],"y":found["y"]-original["y"],"scale":1,
+                    "scale_x":found["scale_x"]/original["scale_x"],"scale_y":found["scale_y"]/original["scale_y"],
+                    "rotation":0,"tracking":tracking,"opacity":body.alignment.opacity}
+        return guarded(calculate)
 
     return routes

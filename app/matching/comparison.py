@@ -46,7 +46,7 @@ def comparison_image(processed,result,raster,options):
         opacity=(mask*options.opacity)[...,None]
         output=(background*(1-opacity)+np.array([40,180,220])*opacity).astype(np.uint8)
     # Export includes exact text elsewhere in response; image visibly labels its purpose.
-    canvas=Image.new("RGB",(output.shape[1],output.shape[0]+26),(22,27,23))
-    canvas.paste(Image.fromarray(output),(0,26))
+    canvas=Image.new("RGB",(max(620,output.shape[1]),output.shape[0]+26),(22,27,23))
+    canvas.paste(Image.fromarray(output),((canvas.width-output.shape[1])//2,26))
     ImageDraw.Draw(canvas).text((8,6),"Visual comparison only - relative shape match, not proof of identity",fill=(190,205,183))
     return canvas

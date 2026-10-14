@@ -113,6 +113,8 @@ def test_job_api_and_shared_favorites(client):
     for mode in ("side","overlay","difference","outline"):
         response=client.post(f"/api/matching/jobs/{key}/compare",json={"font_id":font_id,"alignment":{"mode":mode}})
         assert response.status_code==200 and response.content.startswith(b"\x89PNG")
+    aligned=client.post(f"/api/matching/jobs/{key}/auto-align",json={"font_id":font_id,"alignment":{"tracking":4}})
+    assert aligned.status_code==200 and aligned.json()["tracking"]==4
     assert client.post(f"/api/matching/jobs/{key}/compare",json={"font_id":"arbitrary"}).status_code==422
     client.put(f"/api/favorites/{font_id}",json={"enabled":True})
     assert font_id in client.get("/api/bootstrap").json()["favorites"]
@@ -140,3 +142,50 @@ def test_real_job_cancel_and_single_worker(client,monkeypatch):
     with pytest.raises(ImageError): service.start(MatchRequest(process_id=key,text="S"))
     service.cancel(job["id"]);service.get_job(job["id"]).thread.join(3)
     assert service.status(job["id"])["status"]=="cancelled"
+
+
+def test_transparent_white_letters_and_counters_survive():
+    image=np.zeros((90,120,4),np.uint8)
+    image[15:75,20:100]=255
+    image[30:60,40:80]=0
+    result=preprocess(Image.fromarray(image),Processing(method="alpha",rotation=2))
+    assert result.mask.max()==255
+    # The transparent counter remains empty and visible in the corrected original.
+    assert result.mask[result.mask.shape[0]//2,result.mask.shape[1]//2]==0
+    assert np.ptp(result.image)>150
+
+
+def test_extreme_width_distortion_cannot_force_a_match(client):
+    from app.matching.metrics import detailed
+    _,image=reference(client)
+    reference_mask=preprocess(image,Processing()).mask
+    import cv2
+    narrow=cv2.resize(reference_mask,(max(4,reference_mask.shape[1]//4),reference_mask.shape[0]))
+    normal=detailed(reference_mask,reference_mask,"A S A")[0]
+    distorted=detailed(reference_mask,narrow,"A S A")[0]
+    assert normal>.95 and distorted<normal-.2
+
+
+def test_expired_uploads_and_active_upload_refresh(tmp_path,monkeypatch):
+    from app.matching.images import ImageStore,TTL
+    store=ImageStore(tmp_path)
+    item=store.add(png_bytes(Image.new("RGB",(20,20),"white")))
+    now=time.time()
+    import os
+    os.utime(store.root/f"{item['id']}.upload",(now-TTL-5,now-TTL-5))
+    # An active in-memory item is kept even if its source file has an old mtime.
+    assert store.get(item["id"]).size==(20,20)
+    store.items[item["id"]]["touched"]=now-TTL-5
+    store.cleanup()
+    with pytest.raises(ImageError):store.get(item["id"])
+    assert not (store.root/f"{item['id']}.upload").exists()
+
+
+def test_ranking_is_repeatable_and_repeated_glyphs_have_balanced_weight(client):
+    face,image=reference(client)
+    request=MatchRequest(process_id="x",text="A S A",shortlist=10)
+    processed=preprocess(image,Processing())
+    first=match([face],processed,request,client.app.state.matching.rasterizer)
+    second=match([face],processed,request,client.app.state.matching.rasterizer)
+    assert first["results"]==second["results"]
+    assert character_score(processed.mask,processed.mask,"A S A")==1

@@ -2,6 +2,7 @@
 from io import BytesIO
 from pathlib import Path
 import secrets
+import re
 import threading
 import time
 import warnings
@@ -66,7 +67,7 @@ class ImageStore:
                 self.remove(key)
             # Only our generated files; ignore other extensions and never follow directory trees.
             for file in self.root.glob("*.upload"):
-                if now - file.stat().st_mtime > TTL:
+                if re.fullmatch(r"[a-f0-9]{32}\.upload", file.name) and file.stem not in self.items and now - file.stat().st_mtime > TTL:
                     file.unlink(missing_ok=True)
                     file.with_suffix(".png").unlink(missing_ok=True)
 

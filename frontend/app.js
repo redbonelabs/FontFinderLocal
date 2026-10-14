@@ -1,10 +1,12 @@
 import {createSample, updateSample} from './fonts.js';
+import {initMatching} from './matching.js';
 
 const $ = id => document.getElementById(id);
 const state = {fonts: [], byId: new Map(), filtered: [], favorites: new Set(), settings: null,
   directories: [], token: '', revision: -1, scan: {}, mode: 'library', nodes: new Map(), detail: null,
   variations: new Map(), canOpenFolder: false};
 let saveTimer, toastTimer, pollTimer, scrollFrame;
+let finder;
 let saveChain = Promise.resolve();
 
 function element(tag, className, text) {
@@ -261,6 +263,7 @@ async function poll() {
     if (scan.revision !== state.revision) {
       const catalog = await api('/fonts'); state.revision = catalog.revision; state.fonts = catalog.fonts;
       state.byId = new Map(state.fonts.map(f => [f.id, f])); applyFilters(false); renderCompare();
+      finder?.catalogChanged(catalog.revision);
     }
     renderWindow();
   } catch (error) { $('scan-status').hidden = false; $('scan-status').textContent = `Connection interrupted. ${error.message} Retrying…`; }
@@ -268,12 +271,17 @@ async function poll() {
 }
 
 function showView(settings) {
+  $('finder-view').hidden = true; $('nav-finder').classList.remove('active');
   $('browser-view').hidden = settings; $('settings-view').hidden = !settings;
   $('nav-browser').classList.toggle('active', !settings); $('nav-settings').classList.toggle('active', settings);
   if (!settings) renderWindow();
 }
 
 function wireEvents() {
+  $('nav-finder').addEventListener('click', () => {
+    $('browser-view').hidden = true; $('settings-view').hidden = true; $('finder-view').hidden = false;
+    $('nav-browser').classList.remove('active'); $('nav-settings').classList.remove('active'); $('nav-finder').classList.add('active'); finder?.show();
+  });
   $('nav-browser').addEventListener('click', () => showView(false));
   document.querySelector('.brand').addEventListener('click', () => showView(false));
   $('nav-settings').addEventListener('click', () => showView(true));
@@ -314,6 +322,18 @@ async function start() {
     const boot = await api('/bootstrap'); state.token = boot.token; state.settings = boot.settings;
     state.favorites = new Set(boot.favorites); state.directories = boot.directories; state.canOpenFolder = boot.can_open_folder;
     syncControls(); wireEvents(); renderDirectories(); await poll();
+    finder = await initMatching($('finder-view'), {
+      state, toast,
+      async favorite(id) { const response=await api(`/favorites/${id}`,'PUT',{enabled:!state.favorites.has(id)});state.favorites=new Set(response.favorites);applyFilters(false);renderCompare(); },
+      details(id) { const font=state.byId.get(id);if(!font)throw new Error('Font no longer available. Rescan fonts.');showDetails(font); },
+      compare(id,text) {
+        if(!state.byId.has(id))throw new Error('Font no longer available.');
+        if(!state.settings.compare.includes(id)) { if(state.settings.compare.length>=12)throw new Error('The comparison workspace already has 12 faces. Remove one first.');state.settings.compare.push(id); }
+        state.settings.text=text;syncControls();updateCompareCount();updatePreviews();persist();toast('Added to Font Browser comparison with the exact reference text.');
+      },
+      open(id) { const font=state.byId.get(id);if(!font)throw new Error('Font no longer available.');resetFilters();state.settings.query=font.full_name;syncControls();applyFilters();persist();showView(false);setMode('library'); },
+      locate(id) { return api(`/fonts/${id}/open-folder`,'POST'); }
+    });
   } catch (error) { toast(`Could not open your library. ${error.message} Reload to retry.`, true); $('result-count').textContent = 'Connection unavailable — reload to retry'; }
 }
 start();

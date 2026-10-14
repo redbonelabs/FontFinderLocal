@@ -5,13 +5,14 @@
   <meta name="color-scheme" content="dark"><title>FontFinderLocal</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23c1f878'/%3E%3Ctext x='10' y='47' font-size='44' font-family='serif' fill='%23131a12'%3EFf%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="/static/styles.css"><script type="module" src="/static/app.js"></script>
+  <link rel="stylesheet" href="/static/matching.css">
 </head>
 <body>
   <header class="topbar">
     <a href="#browser" class="brand" aria-label="FontFinderLocal home"><span class="logo">Ff</span><span>FontFinder<span class="brand-muted">Local</span></span></a>
     <nav aria-label="Main navigation">
       <button class="nav-button active" id="nav-browser">Font Browser</button>
-      <span class="nav-soon">Image Font Finder <span class="pill">Coming soon</span></span>
+      <button class="nav-button" id="nav-finder">Image Font Finder</button>
       <button class="nav-button" id="nav-settings">Settings</button>
     </nav>
     <span class="local-status"><span></span> On your machine</span>
@@ -35,11 +36,12 @@
     <section id="comparison" class="comparison" aria-label="Font comparison" hidden><div class="compare-heading"><p>One phrase. Different personalities. Select up to 12 faces.</p><button id="clear-compare" class="button secondary">Clear comparison</button></div><div id="compare-list"></div></section>
     <footer><span>100% local. Your fonts and text stay here.</span><span id="footer-count">Reading your collection</span></footer>
   </main>
+  <main id="finder-view" hidden></main>
   <main id="settings-view" hidden>
     <section class="heading"><div><p class="eyebrow">A LIBRARY THAT FEELS LIKE YOURS</p><h1>Settings</h1><p class="subtitle">Bring your own fonts. Keep everything local.</p></div></section>
     <section class="settings-card"><div class="section-title"><h2>Custom font folders</h2><span class="pill">No installation needed</span></div><p>Preview fonts straight from a local folder. Original files are never copied or modified.</p><form id="directory-form"><label for="directory-path">Absolute folder path</label><div class="directory-input"><input id="directory-path" placeholder="C:\My Fonts" required autocomplete="off"><button class="button primary" type="submit">Add folder</button></div><label class="checkbox-label"><input type="checkbox" id="recursive" checked> Include subfolders</label></form><div id="directory-error" role="alert" class="inline-error" hidden></div><div id="directory-list"></div></section>
     <section class="settings-card"><div class="section-title"><h2>Font discovery</h2><button id="settings-rescan" class="button secondary">↻ Rescan fonts</button></div><p>Windows system fonts, per-user fonts, registry entries, and your custom folders are scanned. Unchanged files use cached metadata.</p><div id="settings-scan" role="status"></div><details id="scan-problems"><summary id="problem-summary">Discovery issues</summary><div id="problem-list"></div></details></section>
-    <section class="settings-card"><h2>Saved on this computer</h2><p>Your preview text, size, filters, view preferences, comparison selection, and favorites are saved automatically. Application data lives in the app’s <code>data</code> folder by default.</p><p>Image Font Finder is planned for a future milestone.</p></section>
+    <section class="settings-card"><h2>Saved on this computer</h2><p>Your preview text, size, filters, view preferences, comparison selection, and favorites are saved automatically. Application data lives in the app’s <code>data</code> folder by default.</p><p>Image Font Finder uploads and results are temporary and expire after an hour. Image processing stays on this computer.</p></section>
   </main>
   <dialog id="details-dialog" aria-labelledby="details-title"><div class="dialog-header"><span class="eyebrow">FONT DETAILS</span><button id="close-details" class="icon-button" aria-label="Close font details">×</button></div><h2 id="details-title"></h2><p id="details-subtitle"></p><div id="details-preview" class="details-preview"></div><div id="variation-controls"></div><dl id="metadata"></dl><div class="detail-actions"><button id="copy-name" class="button secondary">Copy font name</button><button id="copy-path" class="button secondary">Copy source path</button><button id="open-folder" class="button secondary">Open containing folder ↗</button></div></dialog>
   <div id="toast" role="status" hidden></div>

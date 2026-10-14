@@ -1,0 +1,62 @@
+<section class="heading"><div><p class="eyebrow">FROM ARTWORK TO TYPEFACE</p><h1>Find the shapes behind the lettering.</h1><p class="subtitle">Your image, your exact text, your local font collection.</p></div></section>
+<div class="finder-grid">
+  <section class="finder-panel reference-panel" aria-label="Reference image">
+    <div class="finder-title"><h2>1. Reference image</h2><button id="match-browse" class="button secondary">Browse / replace image</button><input id="match-file" type="file" accept=".png,.jpg,.jpeg,.bmp,.tif,.tiff,.webp" hidden></div>
+    <div id="image-drop" class="image-drop" tabindex="0" role="button" aria-label="Drop or browse a lettering image"><strong>Drop your lettering image here</strong><span>PNG, JPEG, BMP, TIFF, WebP · up to 20 MiB</span></div>
+    <div id="editor-area" hidden>
+      <div class="editor-toolbar"><select id="image-tool" aria-label="Image editing tool"><option value="crop">Draw crop</option><option value="pan">Pan image</option><option value="perspective">Perspective corners</option><option value="color">Pick foreground color</option></select><button id="crop-reset" class="button secondary">Reset crop</button><button id="image-rotate" class="button secondary">Rotate 90°</button><button id="image-restore" class="button secondary">Restore original</button></div>
+      <canvas id="reference-canvas" aria-label="Reference image editor: drag to crop; choose pan, foreground color, or perspective corners" tabindex="0"></canvas>
+      <div class="zoom-row"><label for="image-zoom">Zoom</label><input id="image-zoom" type="range" min="1" max="5" value="1" step=".1"><button id="image-fit" class="button secondary">Fit image</button><span id="image-info"></span></div>
+      <p id="editor-help" class="finder-hint">Drag a rectangle around one complete line in one typeface. Include a little background.</p>
+    </div>
+    <div class="processed-heading"><h3>Processed reference</h3><button id="process-now" class="button secondary" disabled>Update preview</button></div>
+    <div class="processed-pair"><figure><img id="processed-mask" alt="Isolated lettering mask" hidden><figcaption>Letter geometry</figcaption></figure><figure><img id="processed-corrected" alt="Cropped and corrected original" hidden><figcaption>Corrected original</figcaption></figure></div>
+    <div id="processing-notes" class="finder-notes" role="status"></div>
+  </section>
+  <section class="finder-panel controls-panel" aria-label="Reference text and processing">
+    <h2>2. Tell us the exact lettering</h2>
+    <label class="exact-label" for="match-text">Exact text shown in image (case-sensitive)</label>
+    <input id="match-text" type="text" maxlength="160" placeholder="e.g. No Good Gofers!" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off">
+    <p class="finder-hint">Enter exactly what the image says, including capitalization, numbers, spaces, and punctuation. This allows FontFinderLocal to compare the correct letter shapes.</p>
+    <p id="match-validation" class="finder-hint">Upload an image and enter its exact text to begin.</p>
+    <div class="finder-control-grid">
+      <label>Foreground polarity<select id="proc-polarity"><option value="auto">Auto detect</option><option value="dark">Dark lettering</option><option value="light">Light lettering</option></select></label>
+      <label>Processing method<select id="proc-method"><option value="auto">Automatic</option><option value="global">Manual threshold</option><option value="adaptive">Adaptive threshold</option><option value="color">Selected fill color</option><option value="alpha">Transparency</option></select></label>
+      <label>Outline handling<select id="proc-outline"><option value="auto">Try alternate fill mask</option><option value="preserve">Preserve all ink</option><option value="fill">Prefer color fill</option></select></label>
+      <label>Matching sensitivity<select id="match-sensitivity"><option value="balanced">Balanced</option><option value="strict">Strict proportions</option><option value="flexible">Flexible artwork</option></select></label>
+    </div>
+    <details class="finder-advanced"><summary>Advanced settings</summary>
+      <div class="finder-control-grid">
+        <label>Threshold <output id="threshold-value">128</output><input id="proc-threshold" type="range" min="1" max="254" value="128"></label>
+        <label>Contrast <output id="contrast-value">1</output><input id="proc-contrast" type="range" min=".5" max="3" step=".05" value="1"></label>
+        <label>Noise reduction<select id="proc-denoise"><option value="0">None</option><option value="1" selected>Gentle</option><option value="2">Moderate</option><option value="3">Stronger</option></select></label>
+        <label>Fine rotation (degrees)<input id="proc-rotation" type="number" min="-30" max="30" step=".25" value="0"></label>
+        <label>Foreground color<input id="proc-color" type="color" value="#000000"></label>
+        <label>Color tolerance<input id="proc-tolerance" type="range" min="5" max="240" value="75"></label>
+        <label>Base tracking (px at 96 px)<input id="match-tracking" type="number" min="-12" max="24" step=".5" value="0"></label>
+        <label>Text alignment<select id="match-alignment"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select></label>
+        <label>Refinement shortlist<select id="match-shortlist"><option value="30">30 · faster</option><option value="60" selected>60 · balanced</option><option value="120">120 · thorough</option></select></label>
+      </div>
+      <label class="checkbox-label"><input id="proc-background" type="checkbox" checked> Remove transparent background</label>
+      <label class="checkbox-label"><input id="proc-shadow" type="checkbox"> Suppress a separately colored shadow</label>
+      <label class="checkbox-label"><input id="proc-deskew" type="checkbox"> Conservative automatic deskew</label>
+      <label class="checkbox-label"><input id="match-variable" type="checkbox" checked> Sample named variable-font instances</label>
+      <p class="finder-hint">Automatic corrections are conservative. Use the foreground color picker for colored fills or outlined letters. Use the perspective tool to drag four corners around a flat lettering plane.</p>
+      <fieldset class="crop-numbers"><legend>Crop bounds (%) — keyboard alternative</legend><label>X<input id="crop-x" type="number" min="0" max="99" value="0"></label><label>Y<input id="crop-y" type="number" min="0" max="99" value="0"></label><label>Width<input id="crop-w" type="number" min="1" max="100" value="100"></label><label>Height<input id="crop-h" type="number" min="1" max="100" value="100"></label><button id="crop-apply" class="button secondary" type="button">Apply bounds</button></fieldset>
+    </details>
+    <div class="find-actions"><button id="find-fonts" class="button primary" disabled>Find Matching Fonts</button><button id="cancel-match" class="button secondary" hidden>Cancel search</button></div>
+    <progress id="match-progress" max="100" value="0" hidden></progress><p id="match-status" class="finder-hint" role="status">Everything is processed on this computer.</p>
+  </section>
+</div>
+<section class="finder-panel match-results" aria-label="Font matching results">
+  <div class="finder-title"><div><h2>3. Closest local faces</h2><p id="results-caption" class="finder-hint">Upload, crop, enter the exact text, then search your collection.</p></div><div class="results-filters"><label class="checkbox-label"><input id="match-favorites" type="checkbox"> Favorites only</label><select id="match-category" aria-label="Match result category"><option value="all">All categories</option><option value="serif">Serif</option><option value="sans-serif">Sans serif</option><option value="monospace">Monospace</option><option value="script">Script</option><option value="decorative">Decorative</option><option value="symbol">Symbol</option><option value="unknown">Unclassified</option></select></div></div>
+  <div id="match-warnings" class="finder-notes"></div><div id="match-result-list" class="match-result-list"></div><button id="match-more" class="button secondary" hidden>Show 20 more results</button>
+</section>
+<dialog id="match-compare-dialog" aria-labelledby="match-compare-title">
+  <div class="dialog-header"><span class="eyebrow">INSPECT THE GEOMETRY</span><button id="match-compare-close" class="icon-button" aria-label="Close image comparison">×</button></div>
+  <h2 id="match-compare-title"></h2><p id="match-compare-caption" class="finder-hint"></p>
+  <div class="comparison-mode-row"><select id="compare-mode" aria-label="Image comparison mode"><option value="side">Side by side</option><option value="overlay" selected>Overlay</option><option value="difference">Difference</option><option value="outline">Outline</option></select><select id="compare-reference" aria-label="Comparison reference"><option value="original">Corrected original</option><option value="processed">Processed mask</option></select><button id="auto-align" class="button secondary">Auto Align</button><button id="reset-alignment" class="button secondary">Reset Alignment</button><button id="export-comparison" class="button secondary">Export PNG</button></div>
+  <div class="comparison-image-wrap"><img id="match-comparison-image" alt="Reference and candidate font comparison"></div><p id="comparison-legend" class="finder-hint"></p>
+  <div id="alignment-controls" class="alignment-controls"></div>
+  <p class="finder-hint">Manual adjustments affect this visual comparison only. Automated rankings and scores remain unchanged.</p><div id="comparison-error" role="alert" class="inline-error" hidden></div>
+</dialog>

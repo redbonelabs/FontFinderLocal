@@ -79,9 +79,13 @@ def preprocess(image: Image.Image, options: Processing):
     if min(rgba.shape[:2]) < 3:
         raise ImageError("Crop is too small. Select the complete lettering.")
     alpha = rgba[:, :, 3].astype(np.float32) / 255
-    rgb = (rgba[:, :, :3] * alpha[..., None] + 255 * (1-alpha[..., None])).astype(np.uint8)
+    transparent = np.count_nonzero(alpha < .95) > alpha.size * .02
+    visible = rgba[:, :, :3][alpha > .5]
+    background = 16 if transparent and len(visible) and np.median(visible) > 180 else 255
+    rgb = (rgba[:, :, :3] * alpha[..., None] + background * (1-alpha[..., None])).astype(np.uint8)
+    border_color=tuple(int(v) for v in np.median(np.concatenate((rgb[0],rgb[-1],rgb[:,0],rgb[:,-1])),axis=0))
     if options.rotation:
-        rgb = rotate(rgb, options.rotation, (255,255,255)); alpha = rotate(alpha, options.rotation)
+        rgb = rotate(rgb, options.rotation, border_color); alpha = rotate(alpha, options.rotation)
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
     gray = np.clip((gray.astype(float)-127.5)*options.contrast+127.5,0,255).astype(np.uint8)
     warnings = []
@@ -98,7 +102,6 @@ def preprocess(image: Image.Image, options: Processing):
     mode = cv2.THRESH_BINARY if light else cv2.THRESH_BINARY_INV
     _, automatic = cv2.threshold(gray, 0, 255, mode | cv2.THRESH_OTSU)
     _, manual = cv2.threshold(gray, options.threshold, 255, mode)
-    transparent = np.count_nonzero(alpha < .95) > alpha.size * .02
     if options.method == "alpha":
         if not transparent:
             raise ImageError("This image has no useful transparency. Choose another processing method.")
@@ -143,7 +146,7 @@ def preprocess(image: Image.Image, options: Processing):
     if options.deskew and angle:
         mask = rotate(mask, angle)
         alternatives = {k: rotate(v,angle) for k,v in alternatives.items()}
-        rgb = rotate(rgb,angle,(255,255,255))
+        rgb = rotate(rgb,angle,border_color)
     elif abs(angle) >= 2:
         warnings.append(f"Possible skew of about {-angle:g}°. Inspect automatic deskew or adjust fine rotation.")
     x0,y0,x1,y1 = ink_bounds(mask)

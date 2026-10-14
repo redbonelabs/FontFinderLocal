@@ -40,4 +40,17 @@ Launch with `Start-FontFinderLocal.bat`; stop with `Stop-FontFinderLocal.bat` be
 New: `app/matching/{models,images,preprocess,raster,metrics,engine,comparison,service,routes}.py`, `tests/test_matching.py`, this log.
 Modified: `requirements.txt`, `requirements-lock.txt`, `app/api.py` (router/service lifecycle and local blob image CSP only).
 Installed: Pillow 12.3.0, NumPy 2.5.4, OpenCV headless 4.14.0.94, freetype-py 2.5.1, uharfbuzz 0.56.3. Pillow reports no RAQM support on this machine, so direct FreeType/HarfBuzz is required instead of relying on Pillow text shaping. Update dependency lock after integration.
-Next: additive frontend workspace and integration callbacks, then independent synthetic ground-truth benchmarking and browser testing. Step 1 full regression rerun is still pending after integration.
+Frontend added: `frontend/matching.html`, `matching.css`, `matching.js`, `image-editor.js`. Existing `index.html` activates the navigation and mounts the new workspace; `app.js` adds narrow integration callbacks for shared favorites/details/comparison and navigation. No existing Browser styles were changed.
+
+Integrated suite: **32 passed in 15.34s**, including all 23 Step 1 regression tests. JavaScript syntax checks pass. Independent Pillow-generated ground-truth benchmark is running (`python -m tests.benchmark_matching`); first five transformed cases ranked the exact originating face first. Do not extrapolate until the complete report is written.
+
+Backend checkpoint: `88d34b7`. Current frontend is saved but not yet browser-verified/checkpointed. New backend started with logs in `test-results/step2-server-*.log`.
+## Latest validation and fixes
+
+- Independent benchmark completed: **10 transformed cases against 91 local faces; exact-ID top-1 90%, top-5 100%, top-10 100%; 46.05 seconds total**. Arial Narrow ranked third behind nearly equivalent compressed Arial faces. Report: `test-results/ground-truth/accuracy.json` (machine-local, not committed).
+- Browser full-catalog search: 639 faces, 615 eligible, 23 missing-glyph exclusions, 1 render failure, **18.0 seconds**. For the transformed Arial sample, Arial ranked third/fourth behind Microsoft Sans Serif. Do not represent subset benchmark accuracy as full-library accuracy.
+- Browser verified upload, processed preview, mixed-case text, native candidate previews, interactive crop (bounds changed), matching progress, cancellation, differences/overlay, manual position and Auto Align, shared details, favorites, add-to-comparison with exact text, case-only text change clearing results without reupload.
+- Preserved the user's existing Browser settings/favorites in `test-results/step2-ui-baseline.json` before integration tests. **Restore these after browser testing**, so test text/comparison choices do not replace user preferences.
+- Added transparent-white-letter/counter preservation, bounded-width-distortion, upload expiry, deterministic ranking tests. **13 matching tests now pass**; final complete suite still to run after latest fixes.
+- Fixed active-upload cleanup, stale preview visibility, very short export labels, stale-font errors, early cancellation race, perspective-mode reset after rotation/crop reset. Latest frontend changes need reload for final verification.
+- Remaining: documentation, runtime comparison/export and final regression validation, restore saved user preferences, local Git checkpoint. No OCR or executable packaging.
