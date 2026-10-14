@@ -50,12 +50,17 @@ def create_app(config=None, *, scan_on_start=True, token=None, shutdown=None):
     store, renderer = Store(config.data_dir), Renderer()
     catalog = Catalog(store)
     token = token or secrets.token_urlsafe(32)
+    from .matching.service import MatchingService
+    from .matching.routes import router as matching_router
+    matching = MatchingService(config, catalog, renderer)
 
     @asynccontextmanager
     async def lifespan(app):
+        matching.start_cleanup()
         if scan_on_start:
             catalog.start()
         yield
+        matching.close()
         if catalog.worker:
             catalog.worker.join(timeout=10)
 
@@ -63,6 +68,8 @@ def create_app(config=None, *, scan_on_start=True, token=None, shutdown=None):
     app.state.catalog = catalog
     app.state.store = store
     app.state.token = token
+    app.state.matching = matching
+    app.include_router(matching_router(matching))
 
     @app.middleware("http")
     async def local_only(request: Request, call_next):
@@ -82,7 +89,7 @@ def create_app(config=None, *, scan_on_start=True, token=None, shutdown=None):
         response.headers["Referrer-Policy"] = "no-referrer"
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
-            "font-src 'self'; img-src 'self' data:; connect-src 'self'; "
+            "font-src 'self'; img-src 'self' data: blob:; connect-src 'self'; "
             "object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
         if not request.url.path.endswith("/asset"):
             response.headers["Cache-Control"] = "no-store"
