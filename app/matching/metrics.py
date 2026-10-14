@@ -105,7 +105,7 @@ def detailed(reference,candidate,text,sensitivity="balanced",alignment="center")
             fitted=align(candidate,target,sx,sy,dx,dy,alignment)
             r=target>127; c=fitted>127
             overlap=np.count_nonzero(r&c)/max(1,np.count_nonzero(r|c))
-            if best is None or overlap>best[0]: best=(overlap,fitted,{"scale_x":sx,"scale_y":sy,"x":dx,"y":dy})
+            if best is None or overlap>best[0]: best=(overlap,fitted,{"scale_x":sx,"scale_y":sy,"x":dx,"y":dy,"anchor":alignment})
     metrics=components(target,best[1])
     score=.42*metrics["overlap"]+.30*metrics["contour"]+.16*metrics["structure"]+.12*metrics["projection"]
     char=character_score(reference,candidate,text)

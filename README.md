@@ -1,6 +1,6 @@
 # FontFinderLocal
 
-A Windows-first, fully local font browser. Type a phrase and preview the actual font faces on your computer, including fonts in folders that are not installed in Windows. Normal operation requires no internet, cloud account, Node.js, or AI software.
+A Windows-first, fully local font browser and image font finder. Preview actual fonts on your computer, or compare lettering from an image against your local collection using the exact text you supply. Custom-folder fonts need not be installed in Windows. Normal operation requires no internet, cloud account, Node.js, or AI software.
 
 ## Features
 
@@ -15,7 +15,9 @@ A Windows-first, fully local font browser. Type a phrase and preview the actual 
 - Virtualized result list, four concurrent asset loads, bounded browser font registration and a 32 MiB server asset cache.
 - No font files are uploaded, modified, installed, or copied into the application data directory.
 
-Image Font Finder is visibly marked **Coming soon**. Image matching is not implemented in this milestone.
+**Image Font Finder** is active: secure upload, crop/zoom/pan, rotation/perspective correction, processed previews, mandatory exact case-sensitive text, background matching/cancellation, native glyph previews, and side-by-side/overlay/difference/outline comparisons with alignment and PNG export. Favorites, details and the Font Browser comparison workspace are shared. No text recognition or spelling/case correction occurs.
+
+See the [Image Font Finder guide](docs/IMAGE_FONT_FINDER.md), [matching architecture](docs/MATCHING_ARCHITECTURE.md), and [Step 2 validation](docs/STEP2_VALIDATION.md).
 
 ## Requirements and first-time setup
 

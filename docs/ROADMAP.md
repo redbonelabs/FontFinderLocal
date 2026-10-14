@@ -1,16 +1,19 @@
 # Roadmap
 
-## Next milestone: Image Font Finder
+## Step 2: implemented
 
-1. Define a local reference-image workflow: crop, rotation, contrast, background removal, and optional known text.
-2. Add safe image decoding with pixel/file limits and transparent progress/error reporting.
-3. Introduce a local glyph rasterizer that accepts existing catalog IDs, collection indices, and variable coordinates. Build repeatable rendering tests first.
-4. Implement deterministic baseline matching (alignment, normalized silhouettes, distance metrics), ranked candidates, and side-by-side overlays.
-5. Cache versioned descriptors in SQLite, invalidate by content identity, and use cancellable bounded background jobs.
-6. Evaluate on a documented corpus of synthetic and real lettering. Show uncertainty and explain that outlines, distortion, effects, and modified logos may not match a local font exactly.
-7. Reuse favorites, details, comparison, and custom folders across both utilities.
+Local upload/preprocessing, mandatory exact-text shaping, whole-library screening and detailed ranking, progress/cancellation, four visual comparison modes, alignment/export and shared Font Browser actions. See `IMAGE_FONT_FINDER.md`, `MATCHING_ARCHITECTURE.md`, `STEP2_VALIDATION.md` and `../STEP2_PROGRESS.md` for evidence and recovery state. Step 1 remains protected by its regression suite.
 
-No external model service or cloud dependency is planned. Add a local ML option only if evaluation demonstrates a concrete improvement and its model/license/distribution cost is acceptable.
+## Next milestone: real-artwork refinement
+
+1. Build a labeled local pinball-lettering evaluation corpus with outlines, shadows, worn paint, perspective, metallic effects, curved lettering and near-identical faces. Record top-1/top-5/top-10 by difficulty with source permissions.
+2. Improve same-color attached shadow and multistroke outline separation while preserving counters and thin details.
+3. Refine tracking and native-proportion optimization using measured errors, particularly condensed-versus-scaled designs.
+4. Add continuous variable-axis optimization and script-aware segmentation only where ground truth shows a benefit.
+5. Expand keyboard perspective editing, accessibility, touch, cross-browser downloads and large-library performance tests.
+6. Consider saved image sessions/presets with explicit retention controls.
+
+Reference text remains manually supplied and authoritative. No automatic text-recognition stage or external model service is planned.
 
 ## Later: distribution and hardening
 

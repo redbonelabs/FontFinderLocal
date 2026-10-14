@@ -115,6 +115,10 @@ def test_job_api_and_shared_favorites(client):
         assert response.status_code==200 and response.content.startswith(b"\x89PNG")
     aligned=client.post(f"/api/matching/jobs/{key}/auto-align",json={"font_id":font_id,"alignment":{"tracking":4}})
     assert aligned.status_code==200 and aligned.json()["tracking"]==4
+    exported=client.get(f"/api/matching/jobs/{key}/comparison.png",params={"font_id":font_id,"alignment":'{"mode":"outline","x":2}'})
+    assert exported.status_code==200 and exported.content.startswith(b"\x89PNG")
+    assert exported.headers["content-disposition"]=='attachment; filename="FontFinderLocal-comparison.png"'
+    assert client.get(f"/api/matching/jobs/{key}/comparison.png",params={"font_id":font_id,"alignment":'{"scale":99}'}).status_code==422
     assert client.post(f"/api/matching/jobs/{key}/compare",json={"font_id":"arbitrary"}).status_code==422
     client.put(f"/api/favorites/{font_id}",json={"enabled":True})
     assert font_id in client.get("/api/bootstrap").json()["favorites"]
@@ -189,3 +193,22 @@ def test_ranking_is_repeatable_and_repeated_glyphs_have_balanced_weight(client):
     second=match([face],processed,request,client.app.state.matching.rasterizer)
     assert first["results"]==second["results"]
     assert character_score(processed.mask,processed.mask,"A S A")==1
+
+
+@pytest.mark.parametrize("anchor",["left","right"])
+def test_comparison_preserves_scored_alignment_anchor(client,anchor):
+    from app.matching.metrics import detailed,align,canonical
+    face,image=reference(client)
+    processed=preprocess(image,Processing())
+    raster=client.app.state.matching.rasterizer.render(face,"A S A",tracking=12)
+    _,_,fitted=detailed(processed.mask,raster.mask,"A S A","strict",anchor)
+    assert fitted["anchor"]==anchor
+    result={"mask":"primary","alignment":fitted}
+    output=np.asarray(comparison_image(processed,result,raster,Alignment(mode="difference")))
+    target=canonical(processed.mask)
+    expected=align(raster.mask,target,fitted["scale_x"],fitted["scale_y"],fitted["x"],fitted["y"],anchor)>127
+    x=(output.shape[1]-target.shape[1])//2
+    pixels=output[26:,x:x+target.shape[1]]
+    # Shared ink and cyan both contain candidate ink; red is reference only.
+    actual=np.all(pixels==[214,231,196],axis=2)|np.all(pixels==[83,207,224],axis=2)
+    assert np.array_equal(actual,expected)

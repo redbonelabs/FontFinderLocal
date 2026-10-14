@@ -34,7 +34,8 @@ export async function initMatching(host, bridge) {
     threshold:Number($('proc-threshold').value),foreground:$('proc-color').value,color_tolerance:Number($('proc-tolerance').value),
     contrast:Number($('proc-contrast').value),denoise:Number($('proc-denoise').value),outline:$('proc-outline').value,
     background_removal:$('proc-background').checked,shadow:$('proc-shadow').checked,deskew:$('proc-deskew').checked};}
-  function syncCrop(){['crop-x','crop-y','crop-w','crop-h'].forEach((id,i)=>$(id).value=Math.round(editor.crop[i]*10000)/100);$('image-zoom').value=editor.zoom;$('image-tool').value=editor.mode;}
+  function syncToolHelp(){$('editor-help').textContent=editor.mode==='perspective'?'Drag corners 1–4 in order: top-left, top-right, bottom-right, bottom-left. Reset crop to remove perspective correction.':editor.mode==='color'?'Click a clean interior area of the letter fill. The selected color is used for isolation.':editor.mode==='pan'?'Drag to pan. Use Zoom or Fit image to change your view.':'Drag around one complete line in one typeface.';}
+  function syncCrop(){['crop-x','crop-y','crop-w','crop-h'].forEach((id,i)=>$(id).value=Math.round(editor.crop[i]*10000)/100);$('image-zoom').value=editor.zoom;$('image-tool').value=editor.mode;syncToolHelp();}
   const editor=new ImageEditor($('reference-canvas'),()=>{syncCrop();invalidate();},color=>{$('proc-color').value=color;$('proc-method').value='color';invalidate();});
   async function upload(file){
     if(!file)return;
@@ -151,14 +152,14 @@ export async function initMatching(host, bridge) {
   for(const id of ['compare-mode','compare-reference'])$(id).addEventListener('change',scheduleComparison);
   $('reset-alignment').addEventListener('click',()=>{setAlignment();scheduleComparison();});
   $('auto-align').addEventListener('click',async()=>{if(!selected)return;try{const auto=await request(`/jobs/${result.id}/auto-align`,'POST',{font_id:selected.font_id,alignment:alignment()});setAlignment(auto);scheduleComparison();}catch(e){error(e.message);}});
-  $('export-comparison').addEventListener('click',async()=>{try{await renderComparison();const link=el('a');link.href=comparisonURL;link.download='FontFinderLocal-comparison.png';link.click();}catch(e){error(e.message);}});
+  $('export-comparison').addEventListener('click',()=>{if(!selected||!result)return;const link=el('a');link.href=`/api/matching/jobs/${result.id}/comparison.png?${new URLSearchParams({font_id:selected.font_id,alignment:JSON.stringify(alignment())})}`;link.download='FontFinderLocal-comparison.png';document.body.append(link);link.click();link.remove();});
   $('match-browse').addEventListener('click',()=>$('match-file').click());$('image-drop').addEventListener('click',()=>$('match-file').click());
   $('image-drop').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('match-file').click();}});
   $('match-file').addEventListener('change',e=>upload(e.target.files[0]));
   host.addEventListener('dragover',e=>{if(e.dataTransfer.types.includes('Files')){e.preventDefault();$('image-drop').classList.add('dragging');}});
   host.addEventListener('dragleave',()=>$('image-drop').classList.remove('dragging'));
   host.addEventListener('drop',e=>{e.preventDefault();$('image-drop').classList.remove('dragging');upload(e.dataTransfer.files[0]);});
-  $('image-tool').addEventListener('change',()=>{editor.setMode($('image-tool').value);$('editor-help').textContent=editor.mode==='perspective'?'Drag corners 1–4 in order: top-left, top-right, bottom-right, bottom-left. Reset crop to remove perspective correction.':editor.mode==='color'?'Click a clean interior area of the letter fill. The selected color is used for isolation.':editor.mode==='pan'?'Drag to pan. Use Zoom or Fit image to change your view.':'Drag around one complete line in one typeface.';});
+  $('image-tool').addEventListener('change',()=>{editor.setMode($('image-tool').value);syncToolHelp();});
   $('image-rotate').addEventListener('click',()=>editor.rotate());$('crop-reset').addEventListener('click',()=>editor.resetCrop());
   $('image-restore').addEventListener('click',()=>{editor.restore(false);$('proc-rotation').value=0;$('proc-polarity').value='auto';$('proc-method').value='auto';$('proc-contrast').value=1;$('proc-threshold').value=128;$('proc-outline').value='auto';$('proc-shadow').checked=false;$('proc-deskew').checked=false;$('proc-denoise').value=1;$('proc-background').checked=true;syncCrop();invalidate();});
   $('image-zoom').addEventListener('input',()=>{editor.zoom=Number($('image-zoom').value);editor.draw();});$('image-fit').addEventListener('click',()=>{editor.zoom=1;editor.pan=[0,0];syncCrop();editor.draw();});

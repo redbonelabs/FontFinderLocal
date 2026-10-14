@@ -22,7 +22,8 @@ def comparison_image(processed,result,raster,options):
     h,w=target.shape
     auto=result["alignment"]
     candidate=align(raster.mask,target,auto["scale_x"]*options.scale*options.scale_x,
-                    auto["scale_y"]*options.scale*options.scale_y,auto["x"]+options.x,auto["y"]+options.y)
+                    auto["scale_y"]*options.scale*options.scale_y,auto["x"]+options.x,auto["y"]+options.y,
+                    auto.get("anchor","center"))
     if options.rotation:
         matrix=cv2.getRotationMatrix2D((w/2,h/2),options.rotation,1)
         candidate=cv2.warpAffine(candidate,matrix,(w,h))

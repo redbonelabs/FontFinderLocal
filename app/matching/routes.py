@@ -2,7 +2,7 @@ from fastapi import APIRouter,Request,HTTPException
 from fastapi.responses import Response
 from PIL import Image
 from .images import MAX_UPLOAD,ImageError,png_bytes
-from .models import ProcessRequest,MatchRequest,CompareRequest
+from .models import ProcessRequest,MatchRequest,CompareRequest,Alignment
 from .comparison import comparison_image,candidate_image
 from .raster import RenderError
 from .metrics import detailed
@@ -76,13 +76,24 @@ def router(service):
             return png_bytes(comparison_image(job.processed,result,raster,body.alignment))
         return Response(guarded(make),media_type="image/png",headers={"Content-Disposition":"inline; filename=font-comparison.png"})
 
+    @routes.get("/jobs/{job_id}/comparison.png")
+    def download(job_id:str,font_id:str,alignment:str="{}"):
+        # A normal local HTTP attachment also works in browsers that cannot save blob URLs.
+        try:
+            options=Alignment.model_validate_json(alignment)
+        except ValueError as exc:
+            raise HTTPException(422,"Invalid comparison settings.") from exc
+        response=compare(job_id,CompareRequest(font_id=font_id,alignment=options))
+        response.headers["Content-Disposition"]='attachment; filename="FontFinderLocal-comparison.png"'
+        return response
+
     @routes.post("/jobs/{job_id}/auto-align")
     def auto_align(job_id:str,body:CompareRequest):
         def calculate():
             job,result,face=service.result(job_id,body.font_id)
             tracking=result["tracking"] if body.alignment.tracking is None else body.alignment.tracking
             raster=service.rasterizer.render(face,job.request.text,tracking=tracking,coordinates=result["coordinates"])
-            _,_,found=detailed(selected_reference(job.processed,result),raster.mask,job.request.text,job.request.sensitivity)
+            _,_,found=detailed(selected_reference(job.processed,result),raster.mask,job.request.text,job.request.sensitivity,job.request.alignment)
             original=result["alignment"]
             return {"x":found["x"]-original["x"],"y":found["y"]-original["y"],"scale":1,
                     "scale_x":found["scale_x"]/original["scale_x"],"scale_y":found["scale_y"]/original["scale_y"],

@@ -111,7 +111,7 @@ def create_app(config=None, *, scan_on_start=True, token=None, shutdown=None):
 
     @app.get("/api/health")
     def health():
-        return {"application": "FontFinderLocal", "version": "1.0.0"}
+        return {"application": "FontFinderLocal", "version": "2.0.0"}
 
     @app.get("/api/bootstrap")
     def bootstrap():

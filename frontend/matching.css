@@ -27,6 +27,7 @@
 .finder-notes p { margin:8px 0 0; }
 .exact-label { display:block; color:var(--accent); font-size:12px; margin:17px 0 9px; }
 #match-text { width:100%; background:#10170f; border:1px solid #536640; border-radius:8px; padding:13px; color:var(--text); font-size:23px; }
+#results-caption, #match-compare-caption { white-space:pre-wrap; overflow-wrap:anywhere; }
 .finder-control-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0; }
 .finder-control-grid label { display:flex; flex-direction:column; gap:7px; color:var(--muted); font-size:11px; }
 .finder-control-grid select,.finder-control-grid input[type=number] { width:100%; min-width:0; }

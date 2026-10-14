@@ -26,7 +26,9 @@ The renderer converts fonts only when requested and preserves supported variatio
 
 All mutations require the process token and compatible Origin/Host headers. A font detail response may contain source paths, but paths are never trusted back from the browser to open or serve files. Font Explorer requests resolve the ID in the catalog and verify its file signature.
 
-## Future Image Font Finder boundary
+## Image Font Finder integration
+
+Step 2 now implements this boundary in `app/matching/` and additive frontend modules. See `MATCHING_ARCHITECTURE.md` for the current implementation. The original design notes below describe the separation retained by that implementation.
 
 Keep discovery, metadata, identity, and rendering as the shared foundation. Add image ingestion/preprocessing, a native rasterizer adapter, matching/indexing services, job progress/cancellation, and dedicated `/api/matching` routes. The matching service should consume catalog IDs and explicit variation coordinates. It should not implement a second scanner or depend on browser CSS names. Derived descriptors can use separate versioned SQLite tables keyed by font ID, rasterizer version, and preprocessing parameters.
 
