@@ -5,3 +5,4 @@ __pycache__/
 .pytest_cache/
 *.py[cod]
 test-results/
+benchmarks/datasets/generated/
