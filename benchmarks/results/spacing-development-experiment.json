@@ -1,0 +1,212 @@
+[
+  {
+    "case": "dev-00-clean",
+    "old_rank": 3,
+    "rank": 3,
+    "top": [
+      [
+        0.8347184113560372,
+        "89b42a12ea0379133fb2f4a1d1bd53058fb61e2343c1d509452d5761acc85b7a-0",
+        "Microsoft Sans Serif",
+        "Regular",
+        1.5
+      ],
+      [
+        0.8347184113560372,
+        "9621f0043b451d266255ac6229e729d476b76dd908635924f0bcdc4bb6719de1-0",
+        "Microsoft Sans Serif",
+        "Regular",
+        1.5
+      ],
+      [
+        0.8228900267083812,
+        "74d696e666f696e93db685a85c94bfbfcc0796dfcf8a2e2e2e2c908a54e82949-0",
+        "Arial",
+        "Regular",
+        1.5
+      ],
+      [
+        0.8228900267083812,
+        "b3658eadae55e682b5f69eb64c439c1ecc8f196c0bb8d4756d145d13bc86476a-0",
+        "Arial",
+        "Regular",
+        1.5
+      ],
+      [
+        0.8139139535468444,
+        "cad552553cf2a75afca01955751aaa115e2a64fd6c6eea42e1fbd236630b7e0a-0",
+        "Arial",
+        "Narrow",
+        1.5
+      ]
+    ]
+  },
+  {
+    "case": "dev-10-contrast",
+    "old_rank": 2,
+    "rank": 2,
+    "top": [
+      [
+        0.7619,
+        "26d345f357d8213475eff6459ccf2dbc9d707e2f8c0445540f3bb183f717c0f0-0",
+        "MS Reference Sans Serif",
+        "Regular",
+        0
+      ],
+      [
+        0.7619,
+        "6a8481fe107ee547893c018b13dba291c2020bec3de5da6525d9ac09f6bc2105-0",
+        "Verdana",
+        "Regular",
+        0
+      ],
+      [
+        0.7606,
+        "bf42509f521fc7fd13221780dfc76eb4121e010a8f24438c115521108a838097-0",
+        "Futura Bk BT",
+        "Book",
+        -3.0
+      ],
+      [
+        0.7064,
+        "9af03d4ad44a3b413d92f7de48b94aa7cc8a1471a75d498406eae837f62ee1d1-0",
+        "Tahoma",
+        "Regular",
+        3.0
+      ],
+      [
+        0.7064,
+        "dbccddcd68ffa5f9e4d2b9f8ca2507145e0c1f02f8f03298cb1f6281fe3ad12e-0",
+        "Tahoma",
+        "Regular",
+        3.0
+      ]
+    ]
+  },
+  {
+    "case": "dev-15-artwork",
+    "old_rank": 2,
+    "rank": 1,
+    "top": [
+      [
+        0.8281460841860078,
+        "9e77165c7bfb4a5436f1ab683f1592bb2a9826e15aecad8dc9ed278ce03e8882-0",
+        "Arial",
+        "Bold",
+        1.5
+      ],
+      [
+        0.8281460841860078,
+        "e8f4e3baf6cc35fed6fcce3a540e8b39e8f6cda1d22a28f2ec8f526fef7a43f5-0",
+        "Arial",
+        "Bold",
+        1.5
+      ],
+      [
+        0.8165,
+        "6c4a4b643461def5411e0217b74a625dcf2fb681252ef5da1db0af4eae80aa7e-0",
+        "Arial",
+        "Narrow Bold",
+        3.0
+      ],
+      [
+        0.7705,
+        "02d39b0177f6f3fef3a72c1ca27ce3dc66f276ad74e72d622014de79d3446a5e-0",
+        "Swansea",
+        "Bold",
+        3.0
+      ],
+      [
+        0.7517,
+        "eaad201da94cb323401fdb8cc760650803ddf8fd704cb9fa56317e6c69bc6fd6-0",
+        "Bahnschrift",
+        "Regular",
+        0
+      ]
+    ]
+  },
+  {
+    "case": "dev-16-low_resolution",
+    "old_rank": 3,
+    "rank": 3,
+    "top": [
+      [
+        0.6456999999999999,
+        "7d55cd4801102131d991630cea74534dcf73a9fabf4a33e54fe05dfb4f5aa790-0",
+        "Microsoft JhengHei",
+        "Bold",
+        -3.0
+      ],
+      [
+        0.6384147581393668,
+        "d460cc9f99a343531a93ae4d6dcac016dd3befe64eaef54fa9b7c4980da951bc-0",
+        "Dubai",
+        "Medium",
+        -1.5
+      ],
+      [
+        0.6362,
+        "57e93ff143572bcc092c1f56202d43ddc07bb119aa104c6d7af163470fb551f6-0",
+        "Calibri",
+        "Regular",
+        -3.0
+      ],
+      [
+        0.6362,
+        "df2c69a18a462e5cbc97d04a033f3bd7cd0abfe818381641f8c2dee7b7c43dbd-0",
+        "Calibri",
+        "Regular",
+        -3.0
+      ],
+      [
+        0.636,
+        "0a8296747536ead27d5f48f67e911cc3b207742b3f704e66995251d12fd422e5-0",
+        "Calibri",
+        "Bold",
+        0
+      ]
+    ]
+  },
+  {
+    "case": "dev-17-antialias",
+    "old_rank": 4,
+    "rank": 5,
+    "top": [
+      [
+        0.8656,
+        "0ec2bdbfc2ba99d9fb05b6f7c511e7ab8b7c055e2d644570ad777455d6e9796d-0",
+        "Gadugi",
+        "Regular",
+        0
+      ],
+      [
+        0.8656,
+        "1dcd304f0ba642dbc3c3f3ccb70c24e9fad7ada2e2d5d0061c7cacab86e8df92-0",
+        "Ebrima",
+        "Regular",
+        0
+      ],
+      [
+        0.8656,
+        "289bfc7da2a20102b0e00bc86d939cc1e3a41b2492bf61f87acdc49a493cb748-0",
+        "Myanmar Text",
+        "Regular",
+        0
+      ],
+      [
+        0.8656,
+        "538949482d964e9f353a3a8d860bb3eda93b46b830f3b677e4f53eb2ff3a6e7d-0",
+        "Microsoft PhagsPa",
+        "Regular",
+        0
+      ],
+      [
+        0.8656,
+        "73db31e13ef5151beb6a5272cff4c6de6ae2f0bbc3688f4046e5e63593f9953a-0",
+        "Segoe UI",
+        "Regular",
+        0
+      ]
+    ]
+  }
+]

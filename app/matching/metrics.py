@@ -36,6 +36,12 @@ def align(candidate, target, sx=1, sy=1, dx=0, dy=0, alignment="center"):
     tw,th=w-36,h-24
     ch,cw=max(1,round(th*sy)),max(1,round(tw*sx))
     core=cv2.resize(tight(candidate),(cw,ch),interpolation=cv2.INTER_AREA)
+    return _place(core,target,dx,dy,alignment)
+
+
+def _place(core,target,dx,dy,alignment):
+    h,w=target.shape
+    ch,cw=core.shape
     x=round((w-cw)/2+dx); y=round((h-ch)/2+dy)
     if alignment == "left": x=18+round(dx)
     if alignment == "right": x=w-18-cw+round(dx)
@@ -94,6 +100,8 @@ def character_score(reference,candidate,text):
 
 def detailed(reference,candidate,text,sensitivity="balanced",alignment="center"):
     target=canonical(reference)
+    binary_target=target>127
+    candidate_core=tight(candidate)
     span={"strict":.025,"balanced":.055,"flexible":.10}[sensitivity]
     native_ratio=(candidate.shape[1]/candidate.shape[0])/(reference.shape[1]/reference.shape[0])
     stretch={"strict":.10,"balanced":.25,"flexible":.40}[sensitivity]
@@ -101,9 +109,10 @@ def detailed(reference,candidate,text,sensitivity="balanced",alignment="center")
     # Search small residual scales/translation after ink-bound normalization.
     for sx,sy in [(1,1),(1-span,1),(1+span,1),(1,1-span),(1,1+span)]:
         sx=float(native_ratio*np.clip(sx/native_ratio,1-stretch,1+stretch))
+        core=cv2.resize(candidate_core,(max(1,round((target.shape[1]-36)*sx)),max(1,round((target.shape[0]-24)*sy))),interpolation=cv2.INTER_AREA)
         for dx,dy in [(0,0),(-2,0),(2,0),(0,-2),(0,2)]:
-            fitted=align(candidate,target,sx,sy,dx,dy,alignment)
-            r=target>127; c=fitted>127
+            fitted=_place(core,target,dx,dy,alignment)
+            r=binary_target; c=fitted>127
             overlap=np.count_nonzero(r&c)/max(1,np.count_nonzero(r|c))
             if best is None or overlap>best[0]: best=(overlap,fitted,{"scale_x":sx,"scale_y":sy,"x":dx,"y":dy,"anchor":alignment})
     metrics=components(target,best[1])

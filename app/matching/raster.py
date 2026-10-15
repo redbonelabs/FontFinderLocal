@@ -43,6 +43,20 @@ class Rasterizer:
         self.max_bytes = max_bytes
         self.lock = threading.RLock()
 
+    def _font_data(self, face, path):
+        # Native sfnt files already contain exactly what FreeType/HarfBuzz need.
+        # Reserializing every table merely to recompute checksums dominated cold
+        # searches. Native collections retain their actual face index; only web
+        # fonts need the existing standalone sfnt conversion.
+        # Do not alter the shared browser asset renderer or add an unbounded cache.
+        with path.open("rb") as source:
+            header = source.read(4)
+            if header in (b"\x00\x01\x00\x00", b"OTTO", b"true"):
+                return header + source.read(), 0
+            if header == b"ttcf":
+                return header + source.read(), face["face_index"]
+        return self.assets.asset(face), 0
+
     def render(self, face, text, size=96, tracking=0, coordinates=None):
         validate_text(text)
         absent = missing_glyphs(face,text)
@@ -55,17 +69,17 @@ class Rasterizer:
                 raise RenderError("Variable axis is outside its supported range.")
         key = (face["id"],text,size,round(tracking,3),tuple(sorted(coordinates.items())))
         with self.lock:
-            locate(face)  # A cached rendering must not disguise an unavailable font.
+            path = locate(face)  # A cached rendering must not disguise an unavailable font.
             if key in self.cache:
                 self.cache.move_to_end(key)
                 return self.cache[key]
             try:
-                data = self.assets.asset(face)
-                ft = freetype.Face(BytesIO(data))
+                data, face_index = self._font_data(face, path)
+                ft = freetype.Face(BytesIO(data), index=face_index)
                 ft.set_pixel_sizes(0,size)
                 if face["axes"]:
                     ft.set_var_design_coords([coordinates.get(a["tag"],a["default"]) for a in face["axes"]])
-                font = hb.Font(hb.Face(data))
+                font = hb.Font(hb.Face(data, face_index))
                 font.scale = (size*64,size*64)
                 hb.ot_font_set_funcs(font)
                 if coordinates:

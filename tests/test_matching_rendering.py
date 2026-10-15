@@ -8,7 +8,6 @@ from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont, TTCollection
 from fontTools.varLib import build
 
-from app.config import Config
 from app.discovery import Catalog
 from app.persistence import Store
 from app.matching.raster import Rasterizer, RenderError
@@ -79,3 +78,13 @@ def test_native_cache_keys_and_unavailable_file(client):
     # Cached pixels must not conceal replacement of the underlying catalog file.
     path=Path(face["path"]);path.write_bytes(path.read_bytes()+b"changed")
     with pytest.raises(FontUnavailable):raster.render(face,"A S A")
+
+
+def test_native_sfnt_matches_existing_asset_conversion(client,monkeypatch):
+    face=client.app.state.catalog.snapshot()["fonts"][0]
+    direct=Rasterizer();converted=Rasterizer()
+    monkeypatch.setattr(converted,"_font_data",lambda face,path:(converted.assets.asset(face),0))
+    for text,size,tracking in [("A S A",24,0),(" S  A ",126,1.5),("AS",46,-3)]:
+        a=direct.render(face,text,size,tracking);b=converted.render(face,text,size,tracking)
+        assert a.advance==b.advance and a.glyphs==b.glyphs
+        assert np.array_equal(a.mask,b.mask)

@@ -195,6 +195,18 @@ def test_ranking_is_repeatable_and_repeated_glyphs_have_balanced_weight(client):
     assert character_score(processed.mask,processed.mask,"A S A")==1
 
 
+def test_automatic_spacing_penalty_respects_user_tracking(client):
+    face,_=reference(client)
+    raster=client.app.state.matching.rasterizer
+    rendered=raster.render(face,"A S A",tracking=3)
+    image=Image.fromarray(255-rendered.mask).convert("RGB")
+    canvas=Image.new("RGB",(image.width+40,image.height+40),"white");canvas.paste(image,(20,20))
+    processed=preprocess(canvas,Processing())
+    result=match([face],processed,MatchRequest(process_id="x",text="A S A",tracking=3),raster)
+    hit=result["results"][0]
+    assert hit["tracking"]==3 and hit["metrics"]["spacing_penalty"]==0
+
+
 @pytest.mark.parametrize("anchor",["left","right"])
 def test_comparison_preserves_scored_alignment_anchor(client,anchor):
     from app.matching.metrics import detailed,align,canonical

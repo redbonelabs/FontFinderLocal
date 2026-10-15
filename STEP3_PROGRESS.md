@@ -18,3 +18,12 @@ Dataset frozen and all baseline runs completed without algorithm changes. `bench
 Three additional native rendering tests passed: distinct collection face outlines, actual variable gvar bounds/cache changes, exact-text/size/tracking and changed-file cache invalidation.
 
 Development analysis: Arial clean ranks 3, Arial Bold artwork ranks 2, low-resolution Calibri ranks 3. Verdana/MS Reference Sans Serif and Segoe UI/Gadugi/Ebrima/Myanmar Text yield identical scores and masks; verify narrow text-specific equivalence separately without rewriting strict baseline measurements. Screening accounts for most cold runtime. Next: bounded spacing experiment, matching-only native asset preparation optimization, then full final development/held-out evaluation and regression/UI validation. Production algorithms are still unchanged.
+
+## Refinement checkpoint
+
+- Baseline preserved at `bce9398`; benchmark creation at `f560425`.
+- Profiling 80 faces: 2.124/2.312 seconds spent in shared asset preparation, mainly font-table checksum recomputation. Matching now reads native TTF/OTF/TTC bytes directly, with the actual collection face index. Web formats retain the shared conversion fallback. Shared Font Browser renderer and frontend are unchanged; no extra cache added.
+- Alignment now crops/resizes once per scale instead of once per translation; selection/scoring geometry is unchanged. Full-catalog rendering and 135 alignment equivalence checks are being run against the protected implementation.
+- First development experiment (`candidate-dev.json`): half-step tracking corrected the artwork case but introduced a thin-font near-tie error; overall top-1 remained 75%, mean runtime 14.27665s. This run used native standalone sfnt optimization, before direct TTC support and spacing regularization.
+- Revised automatic spacing applies a small 0.002-per-pixel cost relative to user-requested tracking, keeping explicit user spacing unpenalized. No scoring weights, preprocessing, shortlist size, text handling, or interfaces changed. Next: complete equivalence checks, freeze this revision, run full development and held-out final evaluations, then API/browser regressions.
+- `audit_equivalence.py` supplements strict metrics with byte-identical Pillow pixels/bounds/advance at two sizes plus exact shaped native pixels/advance at 96px. It never broadens equivalence by family names or approximate scores and never edits preserved baseline reports.
