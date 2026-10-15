@@ -15,6 +15,10 @@ def match(faces, processed, request, rasterizer, cancel=None, progress=lambda **
     references={"primary":processed.mask}
     if len(processed.alternatives)>1:
         references.update(processed.alternatives)
+    # Extra spacing trials are useful only when the supplied sequence agrees
+    # with separated ink spans. No recognition: joined/uncertain masks retain
+    # the original three-value whole-word search.
+    fine_spacing=any(segmentation(ref,request.text) for ref in references.values())
     for index,face in enumerate(faces):
         if cancel.is_set(): raise Cancelled()
         progress(stage="screening",completed=index,total=len(faces),message=f"Rendering {face['family']}")
@@ -47,9 +51,8 @@ def match(faces, processed, request, rasterizer, cancel=None, progress=lambda **
         face=entry["face"]
         progress(stage="refining",completed=index,total=len(shortlist),message=f"Comparing {face['family']}")
         span={"strict":1.5,"balanced":3.,"flexible":6.}[request.sensitivity]
-        # Half steps resolve modest spacing differences without expanding the
-        # permitted distortion range or changing the authoritative text.
-        tracking_values=sorted({max(-12,min(24,request.tracking+delta)) for delta in (0,-span,-span/2,span/2,span)})
+        deltas=(0,-span,-span/2,span/2,span) if fine_spacing else (0,-span,span)
+        tracking_values=sorted({max(-12,min(24,request.tracking+delta)) for delta in deltas})
         best=None
         for tracking in tracking_values:
             if cancel.is_set(): raise Cancelled()
@@ -57,11 +60,6 @@ def match(faces, processed, request, rasterizer, cancel=None, progress=lambda **
                 candidate=rasterizer.render(face,request.text,tracking=tracking,coordinates=entry["coordinates"])
                 for mask_name,ref in references.items():
                     score,metrics,alignment=detailed(ref,candidate.mask,request.text,request.sensitivity,request.alignment)
-                    # Prefer the supplied spacing when geometric evidence is
-                    # effectively tied. This small cost applies only to automatic
-                    # deviation, never to the user's explicitly requested tracking.
-                    metrics["spacing_penalty"]=abs(tracking-request.tracking)*.002
-                    score=max(0,score-metrics["spacing_penalty"])
                     if best is None or score>best["score"]:
                         best={"font_id":face["id"],"family":face["family"],"style":face["style"],"category":face["category"],
                               "score":score,"metrics":metrics,"tracking":tracking,"coordinates":entry["coordinates"],
