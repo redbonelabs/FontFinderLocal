@@ -1,5 +1,6 @@
 import {createSample, updateSample} from './fonts.js';
 import {initMatching} from './matching.js';
+import {PreviewRows} from './preview-rows.js';
 
 const $ = id => document.getElementById(id);
 const state = {fonts: [], byId: new Map(), filtered: [], favorites: new Set(), settings: null,
@@ -8,6 +9,20 @@ const state = {fonts: [], byId: new Map(), filtered: [], favorites: new Set(), s
 let saveTimer, toastTimer, pollTimer, scrollFrame;
 let finder;
 let saveChain = Promise.resolve();
+const rows = new PreviewRows();
+rows.reset([], 0);
+let rowWidth = 0;
+const cardObserver = new ResizeObserver(entries => {
+  const viewport = $('library'), anchor = rows.indexAt(viewport.scrollTop);
+  const within = viewport.scrollTop - rows.offsets[anchor];
+  const sizes = entries.filter(e => e.target.isConnected && state.nodes.get(e.target.dataset.fontId) === e.target)
+    .map(e => [e.target.dataset.fontId, e.target.getBoundingClientRect().height + 12]);
+  if (rows.measure(sizes)) {
+    $('virtual-list').style.height = `${rows.total}px`;
+    viewport.scrollTop = rows.offsets[anchor] + within;
+    cancelAnimationFrame(scrollFrame); scrollFrame = requestAnimationFrame(renderWindow);
+  }
+});
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -94,23 +109,37 @@ function applyFilters(resetScroll = true) {
 }
 
 function rowHeight() { return Math.max(state.settings.density === 'compact' ? 116 : 157, state.settings.size * 1.2 + (state.settings.density === 'compact' ? 104 : 131)); }
-function clearNodes() { state.nodes.clear(); $('virtual-list').replaceChildren(); }
+function resetRows() {
+  const viewport = $('library'), anchor = rows.indexAt(viewport.scrollTop);
+  const within = viewport.scrollTop - rows.offsets[anchor];
+  rows.reset(state.filtered.map(f => f.id), rowHeight());
+  rowWidth = viewport.clientWidth;
+  $('virtual-list').style.height = `${rows.total}px`;
+  viewport.scrollTop = (rows.offsets[Math.min(anchor, state.filtered.length)] || 0) + within;
+}
+function clearNodes() { cardObserver.disconnect(); state.nodes.clear(); $('virtual-list').replaceChildren(); resetRows(); }
 function renderWindow() {
   if (!state.settings || state.mode !== 'library' || $('browser-view').hidden) return;
-  const viewport = $('library'), row = rowHeight();
-  $('virtual-list').style.height = `${state.filtered.length * row}px`;
-  const start = Math.max(0, Math.floor(viewport.scrollTop / row) - 2);
-  const end = Math.min(state.filtered.length, Math.ceil((viewport.scrollTop + viewport.clientHeight) / row) + 2);
+  const viewport = $('library');
+  if (rowWidth !== viewport.clientWidth) {
+    resetRows();
+    // Width changes can add/remove horizontal scrollbars, including in rows whose
+    // outer dimensions otherwise stayed unchanged since the last observation.
+    rows.measure([...state.nodes].map(([id, card]) => [id, card.getBoundingClientRect().height + 12]));
+  }
+  $('virtual-list').style.height = `${rows.total}px`;
+  const start = Math.max(0, rows.indexAt(viewport.scrollTop) - 2);
+  const end = Math.min(state.filtered.length, rows.indexAt(viewport.scrollTop + viewport.clientHeight) + 3);
   const visible = new Set();
   for (let i = start; i < end; i++) {
     const font = state.filtered[i]; visible.add(font.id);
     let card = state.nodes.get(font.id);
     if (!card) {
-      card = createCard(font); state.nodes.set(font.id, card); $('virtual-list').append(card);
+      card = createCard(font); state.nodes.set(font.id, card); $('virtual-list').append(card); cardObserver.observe(card);
     }
-    card.style.top = `${i * row}px`; card.style.height = `${row - 12}px`;
+    card.style.top = `${rows.offsets[i]}px`; card.style.minHeight = `${rowHeight() - 12}px`;
   }
-  for (const [id, card] of state.nodes) if (!visible.has(id)) { card.remove(); state.nodes.delete(id); }
+  for (const [id, card] of state.nodes) if (!visible.has(id)) { cardObserver.unobserve(card); card.remove(); state.nodes.delete(id); }
   const empty = !state.filtered.length;
   $('empty-state').hidden = !empty;
   const loading = state.revision < 0 || (state.scan.running && !state.fonts.length);
@@ -146,7 +175,7 @@ function createCard(font, comparison = false) {
   actions.append(favorite, actionButton(comparison ? `Remove ${font.full_name} from comparison` : `Compare ${font.full_name}`, comparison ? '×' : selected ? '✓' : '+', () => toggleCompare(font), selected), actionButton(`Details for ${font.full_name}`, 'ⓘ', () => showDetails(font)));
   heading.append(actions); card.append(heading);
   createSample(card, font, state.settings.text, state.settings.size, state.variations.get(font.id));
-  if (comparison) card.style.height = `${rowHeight() - 12}px`;
+  if (comparison) card.style.minHeight = `${rowHeight() - 12}px`;
   return card;
 }
 
@@ -180,12 +209,14 @@ function setMode(mode) {
 }
 
 function updatePreviews() {
+  resetRows();
   $('size-output').textContent = `${state.settings.size} px`;
   for (const container of document.querySelectorAll('[data-font-id]')) {
     const font = state.byId.get(container.dataset.fontId);
     if (font) updateSample(container, font, state.settings.text, state.settings.size, state.variations.get(font.id));
-    if (container.classList.contains('font-card')) container.style.height = `${rowHeight() - 12}px`;
+    if (container.classList.contains('font-card')) container.style.minHeight = `${rowHeight() - 12}px`;
   }
+  rows.measure([...state.nodes].map(([id, card]) => [id, card.getBoundingClientRect().height + 12]));
   renderWindow(); persist();
 }
 

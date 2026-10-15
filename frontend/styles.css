@@ -532,9 +532,10 @@ select {
   font-synthesis:none;
   font-kerning:normal;
   white-space:pre;
-  overflow:auto;
+  overflow-x:auto;
+  overflow-y:hidden;
   line-height:1.2;
-  flex:1;
+  flex:1 0 auto;
   padding:8px 0 4px;
   scrollbar-width:thin;
   scrollbar-color:#455142 transparent;

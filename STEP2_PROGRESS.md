@@ -1,5 +1,11 @@
 # Step 2 progress and recovery
 
+## Post-completion Font Browser preview correction
+
+Fixed the reported vertical clipping without changing Image Font Finder behavior. Root cause: fixed single-line card/virtual row sizing plus flex shrinking and `overflow:auto`; the saved text contained a leading newline. The relevant old CSS was already present in the Step 1 checkpoint. Added measured glyph/DOM line bounds, natural preview/card height, horizontal-only scrolling and measured virtual-row offsets. Current settings are used after asynchronous font loading.
+
+Validation: 38 Python tests passed (23 Step 1 + 15 Step 2), Node row-index test passed, 90 browser glyph-layout cases passed at 24/46/72/126 px including tall/variable/multiline/long text. Installed TTF/CFF and isolated custom-folder fonts, density, width, virtual scrolling, comparison, favorites and actual horizontal movement verified. Live Step 2 matching/comparison/cancellation passed against 642 faces. Tested preview fields restored; normal custom folders/favorites untouched. See `docs/PREVIEW_LAYOUT_VALIDATION.md` for exact evidence and repeatable checks. This correction is frontend-only; no new dependencies or discovery changes.
+
 ## Current status — complete, 2026-10-14
 
 Step 2 is implemented and verified against all 24 original completion criteria. Stop feature development for this milestone. The next action is Step 3 evaluation on labeled real pinball/artwork references, followed by measured accuracy improvements. See `docs/STEP2_VALIDATION.md` for the criterion-by-criterion evidence and explicit unverified behavior.

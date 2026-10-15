@@ -4,6 +4,58 @@ const queue = [];
 let active = 0;
 export const alias = font => `ff_${font.id.replaceAll('-', '_')}`;
 const present = id => document.querySelector(`[data-font-id="${id}"]`);
+const sampleSettings = new WeakMap();
+const metricsContext = document.createElement('canvas').getContext('2d');
+
+function fitSample(sample, font, text, size) {
+  let lineHeight = size * 1.2;
+  const lines = text.split(/\r\n?|\n/);
+  let above = 0, below = 0, left = 0, right = 0;
+  let ascent = 0, descent = 0, baseline = size;
+  const face = assets.get(font.id)?.face;
+  if (face) {
+    // FontFace defaults let canvas measure the same variable instance as the DOM.
+    face.variationSettings = sample.style.fontVariationSettings;
+    metricsContext.font = `${size}px "${alias(font)}"`;
+    metricsContext.fontKerning = 'normal';
+    metricsContext.textBaseline = 'alphabetic';
+    for (const line of lines) {
+      const m = metricsContext.measureText(line);
+      ascent = Math.max(ascent, m.actualBoundingBoxAscent);
+      descent = Math.max(descent, m.actualBoundingBoxDescent);
+      lineHeight = Math.max(lineHeight, m.fontBoundingBoxAscent + m.fontBoundingBoxDescent);
+      baseline = m.fontBoundingBoxAscent;
+      left = Math.max(left, m.actualBoundingBoxLeft);
+      right = Math.max(right, m.actualBoundingBoxRight - m.width);
+    }
+    lineHeight = Math.max(lineHeight, ascent + descent);
+  }
+  sample.style.lineHeight = `${lineHeight}px`;
+  sample.style.padding = '8px 0 4px';
+  // Browser inline metrics can differ from canvas metrics (notably in CFF and
+  // fallback runs). Include the DOM line boxes, then measure the real baseline.
+  if (sample.isConnected && sample.getClientRects().length) {
+    const range = document.createRange(); range.selectNodeContents(sample);
+    for (const rect of range.getClientRects()) lineHeight = Math.max(lineHeight, rect.height);
+    sample.style.lineHeight = `${lineHeight}px`;
+    const probe = document.createElement('span');
+    probe.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+    sample.prepend(probe);
+    baseline = probe.getBoundingClientRect().top - sample.getBoundingClientRect().top - 8;
+    probe.remove();
+  }
+  if (face) {
+    above = Math.max(0, ascent - baseline);
+    below = Math.max(0, descent - (lineHeight - baseline));
+  }
+  // Keep the original visual padding, adding only measured ink overhang. Natural
+  // height includes every line and the horizontal scrollbar; flex must not shrink it.
+  sample.style.paddingTop = `${8 + Math.ceil(above)}px`;
+  sample.style.paddingBottom = `${4 + Math.ceil(below)}px`;
+  sample.style.paddingLeft = `${Math.ceil(left)}px`;
+  sample.style.paddingRight = `${Math.ceil(right)}px`;
+  sample.style.minHeight = `${Math.ceil(lines.length * lineHeight + 12 + above + below)}px`;
+}
 
 function trim() {
   for (const [id, entry] of assets) {
@@ -69,6 +121,7 @@ export function missingCharacters(font, text) {
 }
 
 export function updateSample(container, font, text, size, coordinates = {}) {
+  sampleSettings.set(container, {text, size, coordinates});
   const sample = container.querySelector('.font-sample');
   const status = container.querySelector('.render-status');
   sample.textContent = text;
@@ -79,6 +132,7 @@ export function updateSample(container, font, text, size, coordinates = {}) {
   sample.style.fontVariationSettings = Object.entries(values)
     .filter(([tag, value]) => /^[\x20-\x7e]{4}$/.test(tag) && !/["\\]/.test(tag) && Number.isFinite(value))
     .map(([tag, value]) => `"${tag}" ${value}`).join(', ') || 'normal';
+  fitSample(sample, font, text, size);
   const missing = missingCharacters(font, text);
   if (container.dataset.loaded === 'true') {
     status.className = `render-status${missing.length ? ' warning' : ''}`;
@@ -103,9 +157,8 @@ export function createSample(container, font, text, size, coordinates = {}) {
       if (!container.isConnected) return;
       container.dataset.loaded = 'true';
       sample.classList.remove('loading');
-      const currentVariations = sample.style.fontVariationSettings;
-      updateSample(container, font, sample.textContent, parseInt(sample.style.fontSize), coordinates);
-      sample.style.fontVariationSettings = currentVariations;
+      const current = sampleSettings.get(container);
+      updateSample(container, font, current.text, current.size, current.coordinates);
     } catch (error) {
       if (!container.isConnected) return;
       sample.classList.add('loading');
