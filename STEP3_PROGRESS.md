@@ -1,35 +1,56 @@
-# Step 3 progress
+# Step 3 progress and recovery
 
-Protected starting checkpoint: `101638d` (completed Step 2 and verified Font Browser glyph/virtual-row correction). No user changes were present. No remote, OCR, packaging or UI redesign work.
+## Status: complete — 2026-10-15
 
-## Baseline checks
+Step 3 benchmarking, refinement, acceptance evaluation, regression/browser validation and reporting are complete. Stop development for this milestone. Read `STEP3_ACCURACY_REPORT.md` for methodology, measured results, limitations and the next recommended work.
 
-- Full existing Python suite: 38 passed in 13.64 seconds; one existing Starlette/httpx deprecation warning.
-- Node preview-row test: passed.
-- Inspected catalog, shared rendering, matching rasterizer, preprocessing, metrics, ranking, API and prior validation documentation.
-- Live catalog: 642 faces. Benchmark freezes this actual catalog without changing settings/folders.
+Protected baseline: `101638d`. Accepted production implementation: `7968442`; the final evidence/documentation checkpoint follows this update. No OCR, remote/push, packaging, dependency change, interface redesign or Font Browser modification was introduced.
 
-## Current work
+## Accepted results
 
-New independent Pillow reference harness: 20 development cases, 20 held-out cases, four absent/altered-lettering probes (subject to explicitly reported unavailable fonts). All 642 catalog faces participate; no origin-biased distractor sampling. Frozen images/catalog are ignored; compact manifest and measured reports are retained. Conservative table-identical geometry equivalence is reported separately from strict face identity. Cold application caches per case, stable seed, per-category results and sampled Windows working set.
+Frozen full catalog: 642 installed faces / 401 families; 40 known-origin references using 36 faces, plus four separate absent/altered probes. Twenty development and twenty held-out cases. Stable seed, independently generated Pillow references, frozen image hashes and catalog IDs. No custom folders were configured. Do not regenerate the dataset or repeat completed benchmark runs.
 
-Dataset frozen and all baseline runs completed without algorithm changes. `benchmarks/results/baseline-{dev,heldout,probes}.json` are preserved. Development: 20 cases, strict top-1/5/10 75%/100%/100%, mean 17.7908s. Held-out: 20 cases, 80%/95%/95%, mean 18.08475s. Four probes completed separately. All cases used 642 candidates except absent-original probes. No unavailable reference faces. Current catalog has installed fonts only.
+| Evaluation | Strict baseline top-1/5/10 | Accepted top-1/5/10 | Mean search time baseline → accepted |
+|---|---|---|---|
+| Development (20) | 75% / 100% / 100% | 80% / 100% / 100% | 17.7908s → 5.45095s |
+| Held-out (20) | 80% / 95% / 95% | 80% / 95% / 95% | 18.08475s → 5.52175s |
+| Combined (40) | 77.5% / 97.5% / 97.5% | 80% / 97.5% / 97.5% | 17.937775s → 5.48635s |
 
-Three additional native rendering tests passed: distinct collection face outlines, actual variable gvar bounds/cache changes, exact-text/size/tracking and changed-file cache invalidation.
+Mean runtime decreased 69.4%. Only one correct-face rank changed: development Arial Bold synthetic artwork improved 2 → 1. All other development/held-out ranks stayed unchanged. Exact text-specific raster-equivalence top-1 is separately 85% → 87.5% combined; strict metrics are not replaced by this supplemental audit.
 
-Development analysis: Arial clean ranks 3, Arial Bold artwork ranks 2, low-resolution Calibri ranks 3. Verdana/MS Reference Sans Serif and Segoe UI/Gadugi/Ebrima/Myanmar Text yield identical scores and masks; verify narrow text-specific equivalence separately without rewriting strict baseline measurements. Screening accounts for most cold runtime. Next: bounded spacing experiment, matching-only native asset preparation optimization, then full final development/held-out evaluation and regression/UI validation. Production algorithms are still unchanged.
+**Use `benchmarks/results/accepted-*.json` as the final results.** Historical `final-*.json` files are a rejected regularization experiment, retained for audit, not the accepted implementation. `baseline-*.json` is preserved untouched. `equivalence-baseline-accepted.json` is the supplemental exact-pixel audit.
 
-## Refinement checkpoint
+## Production changes
 
-- Baseline preserved at `bce9398`; benchmark creation at `f560425`.
-- Profiling 80 faces: 2.124/2.312 seconds spent in shared asset preparation, mainly font-table checksum recomputation. Matching now reads native TTF/OTF/TTC bytes directly, with the actual collection face index. Web formats retain the shared conversion fallback. Shared Font Browser renderer and frontend are unchanged; no extra cache added.
-- Alignment now crops/resizes once per scale instead of once per translation; selection/scoring geometry is unchanged. Full-catalog rendering and 135 alignment equivalence checks are being run against the protected implementation.
-- First development experiment (`candidate-dev.json`): half-step tracking corrected the artwork case but introduced a thin-font near-tie error; overall top-1 remained 75%, mean runtime 14.27665s. This run used native standalone sfnt optimization, before direct TTC support and spacing regularization.
-- Revised automatic spacing applies a small 0.002-per-pixel cost relative to user-requested tracking, keeping explicit user spacing unpenalized. No scoring weights, preprocessing, shortlist size, text handling, or interfaces changed. Next: complete equivalence checks, freeze this revision, run full development and held-out final evaluations, then API/browser regressions.
-- `audit_equivalence.py` supplements strict metrics with byte-identical Pillow pixels/bounds/advance at two sizes plus exact shaped native pixels/advance at 96px. It never broadens equivalence by family names or approximate scores and never edits preserved baseline reports.
+- `app/matching/raster.py`: read native TTF/OTF/TTC bytes directly, preserving collection face index, instead of rebuilding font tables/checksums. Web fonts retain shared conversion; freshness checks and bounded cache remain. No shared browser renderer change or new cache.
+- `app/matching/metrics.py`: crop once and resize once per scale, reuse for translations. Grid, score weights and comparison geometry unchanged.
+- `app/matching/engine.py`: add bounded tracking half steps only when reference ink spans reliably agree with the supplied sequence. Uncertain/joined masks retain the baseline three-value search. No spacing penalty remains. No text recognition or correction.
 
-### Guardrail revision
+Unrestricted fine spacing introduced a thin-font near-tie regression; a spacing penalty subsequently degraded the low-resolution case. Both were revised on development evidence. Held-out results did not select parameters. No preprocessing change was justified by the development evidence.
 
-The regularized experiment is retained under the historical `final-*.json` label but **is not the accepted final implementation**. It improved development top-1 to 80% but reduced top-5 to 95% by moving low-resolution Calibri from rank 3 to 7. Rejected on development evidence; held-out aggregate was unchanged and was not used to select parameters. Removed the spacing penalty. Extra half steps now require reliable reference ink spans consistent with the supplied sequence, using existing segmentation; uncertain/joined masks keep the baseline three-value search. This avoids adding spacing freedom to the ambiguous thin-font sample while preserving low-resolution baseline scoring. Acceptance runs will use the new `accepted-*` label; preserved reports are never overwritten.
+## Completed validation
 
-Verified optimization equivalence: 626 exact native renders/instances, 23 identical exclusions, no differences; 135 score/alignment comparisons exactly equal to checkpoint `101638d`. Focused matching tests: 20 passed before the guardrail revision.
+- 43 Python tests passed in 15.27s, including all 23 original Step 1 tests. One existing Starlette/httpx deprecation warning; no failures. Node virtual-row test, JavaScript syntax and pip dependency check passed.
+- Native optimization audit: 626 identical face/instance renders and 23 identical exclusions; no differences. All 135 baseline-versus-optimized score/alignment cases identical.
+- Clean authenticated shutdown/restart. Live catalog/browser asset checks passed for TTF/CFF/TTC/variable fonts, 1,120 cached files, no scan issues.
+- Live matching: exact `"  Supreme!  "`, 617 eligible faces, 6.141s, four adjusted comparison PNGs, Auto Align and cancellation passed.
+- Browser upload → manually entered exact text → progress → ranked results → comparison verified. All four views, eight manual controls, Auto Align/reset and actual PNG download observed. Case-only text edit invalidated results without replacing the image. No browser errors/warnings.
+- Preview correction: 90 browser glyph-layout cases passed (24/46/72/126/back-to-24, extreme decorative bounds, actual variable gvar geometry, multiline/leading newline, both densities). Zero vertical overflow; all 30 long cases retained horizontal overflow. Installed TTF/CFF multiline previews passed repeated sizes; virtual-row gaps remained above 12.66px.
+- Browser test tabs closed and isolated preview server stopped. Original settings restored and verified; favorites/folders unchanged. Main application remains running at http://127.0.0.1:8766.
+- Machine-readable validation: `benchmarks/results/validation.json`. Detailed live logs/artifacts are in ignored `test-results/`.
+
+## Known limitations / next milestone
+
+One held-out gradient-background case still fails automatic polarity; the existing Dark lettering option restores rank 1 in a separate diagnostic excluded from acceptance metrics. Small hinted lettering and similar/aliased outlines remain ambiguous. Absent-original probes do not establish calibrated open-set rejection. All artwork is synthetic; no real photographs/user artwork were tested. Current catalog has no custom folders; no thousands-of-fonts or cross-platform certification.
+
+Next recommended work: collect a new untouched labeled real-artwork evaluation set, with custom libraries, gradient backgrounds and small text, plus human Top-10 usefulness judgments. Use a separate new development split for polarity work. No required Step 3 work remains.
+
+## Checkpoints and recovery
+
+- `f560425`: frozen benchmark before algorithm changes.
+- `bce9398`: complete baseline measurements and native-rendering tests.
+- `32c3ed1`: native/alignment optimization and intermediate spacing experiment.
+- `7968442`: accepted conservative spacing implementation, frozen before acceptance runs.
+- Final evidence/report checkpoint: inspect `git log -1` after this update. No remote is configured.
+
+Launch: `Start-FontFinderLocal.bat`, or `.\.venv\Scripts\python.exe -m app.startup --no-browser`. Stop with `Stop-FontFinderLocal.bat`. Benchmark reproduction commands and exact equivalence policy are in `benchmarks/README.md`. Generated local images/catalog snapshots are Git-ignored; proprietary font files are not bundled.

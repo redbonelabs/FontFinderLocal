@@ -1,0 +1,977 @@
+{
+  "policy": "Exact Pillow BASIC pixels/bounds/advance at 64 and 127px plus exact HarfBuzz native pixels/advance/glyph count at 96px, using original exact text and reported coordinates. No tolerance. Only observed top10 candidates audited. Strict reports unchanged.",
+  "reports": {
+    "baseline-dev": {
+      "complete": true,
+      "cases": 20,
+      "top1": 0.8,
+      "top5": 1.0,
+      "top10": 1.0,
+      "rows": [
+        {
+          "id": "dev-00-clean",
+          "strict_rank": 3,
+          "verified_equivalent_rank_in_top10": 3,
+          "equivalent_top10_ids": [
+            "74d696e666f696e93db685a85c94bfbfcc0796dfcf8a2e2e2e2c908a54e82949-0",
+            "b3658eadae55e682b5f69eb64c439c1ecc8f196c0bb8d4756d145d13bc86476a-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Regular",
+            "Arial Regular"
+          ]
+        },
+        {
+          "id": "dev-01-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "38dffcaf1fac89492f7c56c600a14daf36ae42f7c21985cd4134ae113124a58f-0"
+          ],
+          "equivalent_top10_names": [
+            "Georgia Regular"
+          ]
+        },
+        {
+          "id": "dev-02-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "b77d119749b51c7ae5242dd093360d5b1c94117469e578cfdd2de03fdc55eda5-0"
+          ],
+          "equivalent_top10_names": [
+            "Brush Script MT Italic"
+          ]
+        },
+        {
+          "id": "dev-03-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "d64b9e6668069915ae217548b010be1b52be99bc923e88e148a83619b0102868-0"
+          ],
+          "equivalent_top10_names": [
+            "Wide Latin Regular"
+          ]
+        },
+        {
+          "id": "dev-04-variable",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "eaad201da94cb323401fdb8cc760650803ddf8fd704cb9fa56317e6c69bc6fd6-0"
+          ],
+          "equivalent_top10_names": [
+            "Bahnschrift Regular"
+          ]
+        },
+        {
+          "id": "dev-05-crop",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "cad552553cf2a75afca01955751aaa115e2a64fd6c6eea42e1fbd236630b7e0a-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Narrow"
+          ]
+        },
+        {
+          "id": "dev-06-outline",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "d8bbdb72e3f930157824b2e59677d3a912d4512c14a948e6656a2e3fb0c935ad-0"
+          ],
+          "equivalent_top10_names": [
+            "Impact Regular"
+          ]
+        },
+        {
+          "id": "dev-07-shadow",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "fc9fd442d2dcd719c88d42121d69f5dd9dda02cc1c8afa025d261ec28795468f-0"
+          ],
+          "equivalent_top10_names": [
+            "Rockwell Bold"
+          ]
+        },
+        {
+          "id": "dev-08-noise",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "3c574f3990c94e13823a6a9ed32fe42969181b8c707f7d949702ddbb068d1359-0",
+            "866557576dfc772395301b581eccef4c0daf1dbb75f9667f26784b260bce7da1-0"
+          ],
+          "equivalent_top10_names": [
+            "Segoe UI Light",
+            "Segoe UI Light"
+          ]
+        },
+        {
+          "id": "dev-09-rotation",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "4b6d2004937d292f183af258c27d7f7f931783ad0e03d441822768dc02145ded-0",
+            "e7f7a88b65188328aea58670f955022e23c712f55679524729da1e4e03c49d88-0"
+          ],
+          "equivalent_top10_names": [
+            "Times New Roman Italic",
+            "Times New Roman Italic"
+          ]
+        },
+        {
+          "id": "dev-10-contrast",
+          "strict_rank": 2,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "26d345f357d8213475eff6459ccf2dbc9d707e2f8c0445540f3bb183f717c0f0-0",
+            "6a8481fe107ee547893c018b13dba291c2020bec3de5da6525d9ac09f6bc2105-0"
+          ],
+          "equivalent_top10_names": [
+            "MS Reference Sans Serif Regular",
+            "Verdana Regular"
+          ]
+        },
+        {
+          "id": "dev-11-color",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "d0d2d8efdbf07df506c87f9cadcd5052a6e446c99570177b1f98555661c6937c-0"
+          ],
+          "equivalent_top10_names": [
+            "Jokerman Regular"
+          ]
+        },
+        {
+          "id": "dev-12-tracking",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "6aab1f79264ccda1e7129dba62dbe3750b10eaa27408a327dadb808724e62c84-0",
+            "e4a66a0259718d0c8f4b6e14319b4803ced45afbddf3abba8b8c3e2006856206-0"
+          ],
+          "equivalent_top10_names": [
+            "Courier New Regular",
+            "Courier New Regular"
+          ]
+        },
+        {
+          "id": "dev-13-stretch",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "bf42509f521fc7fd13221780dfc76eb4121e010a8f24438c115521108a838097-0"
+          ],
+          "equivalent_top10_names": [
+            "Futura Bk BT Book"
+          ]
+        },
+        {
+          "id": "dev-14-perspective",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "fe3e8bdd64c1c9f3b9cf5189d06510c80d72cec28e03d04bffc560f77eec58d1-0"
+          ],
+          "equivalent_top10_names": [
+            "Trebuchet MS Regular"
+          ]
+        },
+        {
+          "id": "dev-15-artwork",
+          "strict_rank": 2,
+          "verified_equivalent_rank_in_top10": 2,
+          "equivalent_top10_ids": [
+            "9e77165c7bfb4a5436f1ab683f1592bb2a9826e15aecad8dc9ed278ce03e8882-0",
+            "e8f4e3baf6cc35fed6fcce3a540e8b39e8f6cda1d22a28f2ec8f526fef7a43f5-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Bold",
+            "Arial Bold"
+          ]
+        },
+        {
+          "id": "dev-16-low_resolution",
+          "strict_rank": 3,
+          "verified_equivalent_rank_in_top10": 3,
+          "equivalent_top10_ids": [
+            "57e93ff143572bcc092c1f56202d43ddc07bb119aa104c6d7af163470fb551f6-0",
+            "df2c69a18a462e5cbc97d04a033f3bd7cd0abfe818381641f8c2dee7b7c43dbd-0"
+          ],
+          "equivalent_top10_names": [
+            "Calibri Regular",
+            "Calibri Regular"
+          ]
+        },
+        {
+          "id": "dev-17-antialias",
+          "strict_rank": 4,
+          "verified_equivalent_rank_in_top10": 4,
+          "equivalent_top10_ids": [
+            "73db31e13ef5151beb6a5272cff4c6de6ae2f0bbc3688f4046e5e63593f9953a-0",
+            "8134dbcd09e7b123c9a7f229d49cffbcb01352cc72ea5e1076b65d0dca9f73cd-0"
+          ],
+          "equivalent_top10_names": [
+            "Segoe UI Regular",
+            "Segoe UI Regular"
+          ]
+        },
+        {
+          "id": "dev-18-inverted",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "2934319d3c6ba08a4477a3dc4f08695d4b926fc81a316f7a278e780ab5c9609d-0"
+          ],
+          "equivalent_top10_names": [
+            "Blackadder ITC Regular"
+          ]
+        },
+        {
+          "id": "dev-19-background",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "84e70ccc1664482f4a960442c7a166c91a1b2cf98ff88c33cb73f79403f66d7b-0"
+          ],
+          "equivalent_top10_names": [
+            "Cambria Regular"
+          ]
+        }
+      ]
+    },
+    "baseline-heldout": {
+      "complete": true,
+      "cases": 20,
+      "top1": 0.9,
+      "top5": 0.95,
+      "top10": 0.95,
+      "rows": [
+        {
+          "id": "heldout-00-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "9af03d4ad44a3b413d92f7de48b94aa7cc8a1471a75d498406eae837f62ee1d1-0",
+            "dbccddcd68ffa5f9e4d2b9f8ca2507145e0c1f02f8f03298cb1f6281fe3ad12e-0"
+          ],
+          "equivalent_top10_names": [
+            "Tahoma Regular",
+            "Tahoma Regular"
+          ]
+        },
+        {
+          "id": "heldout-01-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "e47d594e2e2bc31b28f87b6f66483d32f925843ceb002f919c7a403aca48813d-0"
+          ],
+          "equivalent_top10_names": [
+            "Palatino Linotype Regular"
+          ]
+        },
+        {
+          "id": "heldout-02-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "60c4f425563b12a6c0223d5c65212fffb42f4b3d84789084aae44c42f3416865-0"
+          ],
+          "equivalent_top10_names": [
+            "Edwardian Script ITC Regular"
+          ]
+        },
+        {
+          "id": "heldout-03-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "eeb1703c78a39a800e625f0172254a3dfef40d27b367be6014ae9be89508b755-0"
+          ],
+          "equivalent_top10_names": [
+            "Williams Pinball Wide Regular"
+          ]
+        },
+        {
+          "id": "heldout-04-variable",
+          "strict_rank": 2,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "0e141cb99609f6f10ad05313fd1807d5cc9e28658dcbb35ab162e52ff67dc718-0",
+            "cfb6a8d474018fe46d53a427e5fbee44b998822d0d3d8772914bd712cfc55ac4-0"
+          ],
+          "equivalent_top10_names": [
+            "Cascadia Mono Roman",
+            "Cascadia Code Roman"
+          ]
+        },
+        {
+          "id": "heldout-05-crop",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "967465e783b62ce5fdfb10183753ddfa0ba6396036340fd3cc67f85187d57689-0"
+          ],
+          "equivalent_top10_names": [
+            "Rockwell Condensed Regular"
+          ]
+        },
+        {
+          "id": "heldout-06-outline",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "10df702864b1f89cb29ba0d6b97c04228338d16807e13e8d8c74b91aba5e5f23-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Black"
+          ]
+        },
+        {
+          "id": "heldout-07-shadow",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "72a6cd94fab6c179392075d3fb361e269cdddfad41bb7ab385fa22a37e49a900-0"
+          ],
+          "equivalent_top10_names": [
+            "Georgia Bold"
+          ]
+        },
+        {
+          "id": "heldout-08-noise",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "2db491080305b349588b9851fb6fe960eee04cd7c1097784a987287d782f0a54-0",
+            "744d3ec1b277e3652ba8f8d45c89f83c99b7ecf3eb2dfa27306d7be56d3ee030-0"
+          ],
+          "equivalent_top10_names": [
+            "Calibri Light",
+            "Calibri Light"
+          ]
+        },
+        {
+          "id": "heldout-09-rotation",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "6ac9e0ec4d55bfa29e16a7b74e9109efb344bff80d87cc664e1af63bd6c45f94-0",
+            "86b32db9a06f9694e2a3760c42e5117bcdc5cc1255bb5186ca8ce0305e22f288-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Italic",
+            "Arial Italic"
+          ]
+        },
+        {
+          "id": "heldout-10-contrast",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "fe3e8bdd64c1c9f3b9cf5189d06510c80d72cec28e03d04bffc560f77eec58d1-0"
+          ],
+          "equivalent_top10_names": [
+            "Trebuchet MS Regular"
+          ]
+        },
+        {
+          "id": "heldout-11-color",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "e334bf287bdf4211fe5958c4926c8ad4ddd3f44f5fdcb2d9dcfa1394186d8132-0"
+          ],
+          "equivalent_top10_names": [
+            "Matura MT Script Capitals Regular"
+          ]
+        },
+        {
+          "id": "heldout-12-tracking",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "c6e6ce8119fdd47ec6a5449a08e2d2ad7f41ea03143aae193068ed9fa58eaebc-0",
+            "cf00b507b3286870cc5064ebd0633c303f70b491a4af25eec2d32df413db0179-0"
+          ],
+          "equivalent_top10_names": [
+            "Consolas Regular",
+            "Consolas Regular"
+          ]
+        },
+        {
+          "id": "heldout-13-stretch",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "3a9cbb5d75b2a2b0d22dc94571608e4e9dc7b88e825374985880c5722c1c9e5f-0"
+          ],
+          "equivalent_top10_names": [
+            "Century Gothic Regular"
+          ]
+        },
+        {
+          "id": "heldout-14-perspective",
+          "strict_rank": 2,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "26d345f357d8213475eff6459ccf2dbc9d707e2f8c0445540f3bb183f717c0f0-0",
+            "6a8481fe107ee547893c018b13dba291c2020bec3de5da6525d9ac09f6bc2105-0"
+          ],
+          "equivalent_top10_names": [
+            "MS Reference Sans Serif Regular",
+            "Verdana Regular"
+          ]
+        },
+        {
+          "id": "heldout-15-artwork",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "d8bbdb72e3f930157824b2e59677d3a912d4512c14a948e6656a2e3fb0c935ad-0"
+          ],
+          "equivalent_top10_names": [
+            "Impact Regular"
+          ]
+        },
+        {
+          "id": "heldout-16-low_resolution",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "9af03d4ad44a3b413d92f7de48b94aa7cc8a1471a75d498406eae837f62ee1d1-0",
+            "dbccddcd68ffa5f9e4d2b9f8ca2507145e0c1f02f8f03298cb1f6281fe3ad12e-0"
+          ],
+          "equivalent_top10_names": [
+            "Tahoma Regular",
+            "Tahoma Regular"
+          ]
+        },
+        {
+          "id": "heldout-17-antialias",
+          "strict_rank": 4,
+          "verified_equivalent_rank_in_top10": 4,
+          "equivalent_top10_ids": [
+            "931c5de5c70401d9324d5014c123802b4fb753000360ceb2f56c589403cd58c5-0",
+            "f2cb777422a10368904d3f691e650e39da862fe723389056324927df540a35ec-0"
+          ],
+          "equivalent_top10_names": [
+            "Times New Roman Regular",
+            "Times New Roman Regular"
+          ]
+        },
+        {
+          "id": "heldout-18-inverted",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "2e131823861483b966f87ca23063ba6f3c0cecf9ac5d785d71ed1710dab477d5-0"
+          ],
+          "equivalent_top10_names": [
+            "Freestyle Script Regular"
+          ]
+        },
+        {
+          "id": "heldout-19-background",
+          "strict_rank": null,
+          "verified_equivalent_rank_in_top10": null,
+          "equivalent_top10_ids": [],
+          "equivalent_top10_names": []
+        }
+      ]
+    },
+    "accepted-dev": {
+      "complete": true,
+      "cases": 20,
+      "top1": 0.85,
+      "top5": 1.0,
+      "top10": 1.0,
+      "rows": [
+        {
+          "id": "dev-00-clean",
+          "strict_rank": 3,
+          "verified_equivalent_rank_in_top10": 3,
+          "equivalent_top10_ids": [
+            "74d696e666f696e93db685a85c94bfbfcc0796dfcf8a2e2e2e2c908a54e82949-0",
+            "b3658eadae55e682b5f69eb64c439c1ecc8f196c0bb8d4756d145d13bc86476a-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Regular",
+            "Arial Regular"
+          ]
+        },
+        {
+          "id": "dev-01-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "38dffcaf1fac89492f7c56c600a14daf36ae42f7c21985cd4134ae113124a58f-0"
+          ],
+          "equivalent_top10_names": [
+            "Georgia Regular"
+          ]
+        },
+        {
+          "id": "dev-02-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "b77d119749b51c7ae5242dd093360d5b1c94117469e578cfdd2de03fdc55eda5-0"
+          ],
+          "equivalent_top10_names": [
+            "Brush Script MT Italic"
+          ]
+        },
+        {
+          "id": "dev-03-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "d64b9e6668069915ae217548b010be1b52be99bc923e88e148a83619b0102868-0"
+          ],
+          "equivalent_top10_names": [
+            "Wide Latin Regular"
+          ]
+        },
+        {
+          "id": "dev-04-variable",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "eaad201da94cb323401fdb8cc760650803ddf8fd704cb9fa56317e6c69bc6fd6-0"
+          ],
+          "equivalent_top10_names": [
+            "Bahnschrift Regular"
+          ]
+        },
+        {
+          "id": "dev-05-crop",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "cad552553cf2a75afca01955751aaa115e2a64fd6c6eea42e1fbd236630b7e0a-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Narrow"
+          ]
+        },
+        {
+          "id": "dev-06-outline",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "d8bbdb72e3f930157824b2e59677d3a912d4512c14a948e6656a2e3fb0c935ad-0"
+          ],
+          "equivalent_top10_names": [
+            "Impact Regular"
+          ]
+        },
+        {
+          "id": "dev-07-shadow",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "fc9fd442d2dcd719c88d42121d69f5dd9dda02cc1c8afa025d261ec28795468f-0"
+          ],
+          "equivalent_top10_names": [
+            "Rockwell Bold"
+          ]
+        },
+        {
+          "id": "dev-08-noise",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "3c574f3990c94e13823a6a9ed32fe42969181b8c707f7d949702ddbb068d1359-0",
+            "866557576dfc772395301b581eccef4c0daf1dbb75f9667f26784b260bce7da1-0"
+          ],
+          "equivalent_top10_names": [
+            "Segoe UI Light",
+            "Segoe UI Light"
+          ]
+        },
+        {
+          "id": "dev-09-rotation",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "4b6d2004937d292f183af258c27d7f7f931783ad0e03d441822768dc02145ded-0",
+            "e7f7a88b65188328aea58670f955022e23c712f55679524729da1e4e03c49d88-0"
+          ],
+          "equivalent_top10_names": [
+            "Times New Roman Italic",
+            "Times New Roman Italic"
+          ]
+        },
+        {
+          "id": "dev-10-contrast",
+          "strict_rank": 2,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "26d345f357d8213475eff6459ccf2dbc9d707e2f8c0445540f3bb183f717c0f0-0",
+            "6a8481fe107ee547893c018b13dba291c2020bec3de5da6525d9ac09f6bc2105-0"
+          ],
+          "equivalent_top10_names": [
+            "MS Reference Sans Serif Regular",
+            "Verdana Regular"
+          ]
+        },
+        {
+          "id": "dev-11-color",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "d0d2d8efdbf07df506c87f9cadcd5052a6e446c99570177b1f98555661c6937c-0"
+          ],
+          "equivalent_top10_names": [
+            "Jokerman Regular"
+          ]
+        },
+        {
+          "id": "dev-12-tracking",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "6aab1f79264ccda1e7129dba62dbe3750b10eaa27408a327dadb808724e62c84-0",
+            "e4a66a0259718d0c8f4b6e14319b4803ced45afbddf3abba8b8c3e2006856206-0"
+          ],
+          "equivalent_top10_names": [
+            "Courier New Regular",
+            "Courier New Regular"
+          ]
+        },
+        {
+          "id": "dev-13-stretch",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "bf42509f521fc7fd13221780dfc76eb4121e010a8f24438c115521108a838097-0"
+          ],
+          "equivalent_top10_names": [
+            "Futura Bk BT Book"
+          ]
+        },
+        {
+          "id": "dev-14-perspective",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "fe3e8bdd64c1c9f3b9cf5189d06510c80d72cec28e03d04bffc560f77eec58d1-0"
+          ],
+          "equivalent_top10_names": [
+            "Trebuchet MS Regular"
+          ]
+        },
+        {
+          "id": "dev-15-artwork",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "9e77165c7bfb4a5436f1ab683f1592bb2a9826e15aecad8dc9ed278ce03e8882-0",
+            "e8f4e3baf6cc35fed6fcce3a540e8b39e8f6cda1d22a28f2ec8f526fef7a43f5-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Bold",
+            "Arial Bold"
+          ]
+        },
+        {
+          "id": "dev-16-low_resolution",
+          "strict_rank": 3,
+          "verified_equivalent_rank_in_top10": 3,
+          "equivalent_top10_ids": [
+            "57e93ff143572bcc092c1f56202d43ddc07bb119aa104c6d7af163470fb551f6-0",
+            "df2c69a18a462e5cbc97d04a033f3bd7cd0abfe818381641f8c2dee7b7c43dbd-0"
+          ],
+          "equivalent_top10_names": [
+            "Calibri Regular",
+            "Calibri Regular"
+          ]
+        },
+        {
+          "id": "dev-17-antialias",
+          "strict_rank": 4,
+          "verified_equivalent_rank_in_top10": 4,
+          "equivalent_top10_ids": [
+            "73db31e13ef5151beb6a5272cff4c6de6ae2f0bbc3688f4046e5e63593f9953a-0",
+            "8134dbcd09e7b123c9a7f229d49cffbcb01352cc72ea5e1076b65d0dca9f73cd-0"
+          ],
+          "equivalent_top10_names": [
+            "Segoe UI Regular",
+            "Segoe UI Regular"
+          ]
+        },
+        {
+          "id": "dev-18-inverted",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "2934319d3c6ba08a4477a3dc4f08695d4b926fc81a316f7a278e780ab5c9609d-0"
+          ],
+          "equivalent_top10_names": [
+            "Blackadder ITC Regular"
+          ]
+        },
+        {
+          "id": "dev-19-background",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "84e70ccc1664482f4a960442c7a166c91a1b2cf98ff88c33cb73f79403f66d7b-0"
+          ],
+          "equivalent_top10_names": [
+            "Cambria Regular"
+          ]
+        }
+      ]
+    },
+    "accepted-heldout": {
+      "complete": true,
+      "cases": 20,
+      "top1": 0.9,
+      "top5": 0.95,
+      "top10": 0.95,
+      "rows": [
+        {
+          "id": "heldout-00-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "9af03d4ad44a3b413d92f7de48b94aa7cc8a1471a75d498406eae837f62ee1d1-0",
+            "dbccddcd68ffa5f9e4d2b9f8ca2507145e0c1f02f8f03298cb1f6281fe3ad12e-0"
+          ],
+          "equivalent_top10_names": [
+            "Tahoma Regular",
+            "Tahoma Regular"
+          ]
+        },
+        {
+          "id": "heldout-01-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "e47d594e2e2bc31b28f87b6f66483d32f925843ceb002f919c7a403aca48813d-0"
+          ],
+          "equivalent_top10_names": [
+            "Palatino Linotype Regular"
+          ]
+        },
+        {
+          "id": "heldout-02-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "60c4f425563b12a6c0223d5c65212fffb42f4b3d84789084aae44c42f3416865-0"
+          ],
+          "equivalent_top10_names": [
+            "Edwardian Script ITC Regular"
+          ]
+        },
+        {
+          "id": "heldout-03-clean",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "eeb1703c78a39a800e625f0172254a3dfef40d27b367be6014ae9be89508b755-0"
+          ],
+          "equivalent_top10_names": [
+            "Williams Pinball Wide Regular"
+          ]
+        },
+        {
+          "id": "heldout-04-variable",
+          "strict_rank": 2,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "0e141cb99609f6f10ad05313fd1807d5cc9e28658dcbb35ab162e52ff67dc718-0",
+            "cfb6a8d474018fe46d53a427e5fbee44b998822d0d3d8772914bd712cfc55ac4-0"
+          ],
+          "equivalent_top10_names": [
+            "Cascadia Mono Roman",
+            "Cascadia Code Roman"
+          ]
+        },
+        {
+          "id": "heldout-05-crop",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "967465e783b62ce5fdfb10183753ddfa0ba6396036340fd3cc67f85187d57689-0"
+          ],
+          "equivalent_top10_names": [
+            "Rockwell Condensed Regular"
+          ]
+        },
+        {
+          "id": "heldout-06-outline",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "10df702864b1f89cb29ba0d6b97c04228338d16807e13e8d8c74b91aba5e5f23-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Black"
+          ]
+        },
+        {
+          "id": "heldout-07-shadow",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "72a6cd94fab6c179392075d3fb361e269cdddfad41bb7ab385fa22a37e49a900-0"
+          ],
+          "equivalent_top10_names": [
+            "Georgia Bold"
+          ]
+        },
+        {
+          "id": "heldout-08-noise",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "2db491080305b349588b9851fb6fe960eee04cd7c1097784a987287d782f0a54-0",
+            "744d3ec1b277e3652ba8f8d45c89f83c99b7ecf3eb2dfa27306d7be56d3ee030-0"
+          ],
+          "equivalent_top10_names": [
+            "Calibri Light",
+            "Calibri Light"
+          ]
+        },
+        {
+          "id": "heldout-09-rotation",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "6ac9e0ec4d55bfa29e16a7b74e9109efb344bff80d87cc664e1af63bd6c45f94-0",
+            "86b32db9a06f9694e2a3760c42e5117bcdc5cc1255bb5186ca8ce0305e22f288-0"
+          ],
+          "equivalent_top10_names": [
+            "Arial Italic",
+            "Arial Italic"
+          ]
+        },
+        {
+          "id": "heldout-10-contrast",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "fe3e8bdd64c1c9f3b9cf5189d06510c80d72cec28e03d04bffc560f77eec58d1-0"
+          ],
+          "equivalent_top10_names": [
+            "Trebuchet MS Regular"
+          ]
+        },
+        {
+          "id": "heldout-11-color",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "e334bf287bdf4211fe5958c4926c8ad4ddd3f44f5fdcb2d9dcfa1394186d8132-0"
+          ],
+          "equivalent_top10_names": [
+            "Matura MT Script Capitals Regular"
+          ]
+        },
+        {
+          "id": "heldout-12-tracking",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "c6e6ce8119fdd47ec6a5449a08e2d2ad7f41ea03143aae193068ed9fa58eaebc-0",
+            "cf00b507b3286870cc5064ebd0633c303f70b491a4af25eec2d32df413db0179-0"
+          ],
+          "equivalent_top10_names": [
+            "Consolas Regular",
+            "Consolas Regular"
+          ]
+        },
+        {
+          "id": "heldout-13-stretch",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "3a9cbb5d75b2a2b0d22dc94571608e4e9dc7b88e825374985880c5722c1c9e5f-0"
+          ],
+          "equivalent_top10_names": [
+            "Century Gothic Regular"
+          ]
+        },
+        {
+          "id": "heldout-14-perspective",
+          "strict_rank": 2,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "26d345f357d8213475eff6459ccf2dbc9d707e2f8c0445540f3bb183f717c0f0-0",
+            "6a8481fe107ee547893c018b13dba291c2020bec3de5da6525d9ac09f6bc2105-0"
+          ],
+          "equivalent_top10_names": [
+            "MS Reference Sans Serif Regular",
+            "Verdana Regular"
+          ]
+        },
+        {
+          "id": "heldout-15-artwork",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "d8bbdb72e3f930157824b2e59677d3a912d4512c14a948e6656a2e3fb0c935ad-0"
+          ],
+          "equivalent_top10_names": [
+            "Impact Regular"
+          ]
+        },
+        {
+          "id": "heldout-16-low_resolution",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "9af03d4ad44a3b413d92f7de48b94aa7cc8a1471a75d498406eae837f62ee1d1-0",
+            "dbccddcd68ffa5f9e4d2b9f8ca2507145e0c1f02f8f03298cb1f6281fe3ad12e-0"
+          ],
+          "equivalent_top10_names": [
+            "Tahoma Regular",
+            "Tahoma Regular"
+          ]
+        },
+        {
+          "id": "heldout-17-antialias",
+          "strict_rank": 4,
+          "verified_equivalent_rank_in_top10": 4,
+          "equivalent_top10_ids": [
+            "931c5de5c70401d9324d5014c123802b4fb753000360ceb2f56c589403cd58c5-0",
+            "f2cb777422a10368904d3f691e650e39da862fe723389056324927df540a35ec-0"
+          ],
+          "equivalent_top10_names": [
+            "Times New Roman Regular",
+            "Times New Roman Regular"
+          ]
+        },
+        {
+          "id": "heldout-18-inverted",
+          "strict_rank": 1,
+          "verified_equivalent_rank_in_top10": 1,
+          "equivalent_top10_ids": [
+            "2e131823861483b966f87ca23063ba6f3c0cecf9ac5d785d71ed1710dab477d5-0"
+          ],
+          "equivalent_top10_names": [
+            "Freestyle Script Regular"
+          ]
+        },
+        {
+          "id": "heldout-19-background",
+          "strict_rank": null,
+          "verified_equivalent_rank_in_top10": null,
+          "equivalent_top10_ids": [],
+          "equivalent_top10_names": []
+        }
+      ]
+    }
+  }
+}

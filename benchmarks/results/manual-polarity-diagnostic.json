@@ -1,0 +1,293 @@
+{
+  "purpose": "Post-evaluation manual workaround only, excluded from all acceptance metrics; no production change",
+  "case": "heldout-19-background",
+  "polarity": "dark",
+  "rank": 1,
+  "seconds": 7.109,
+  "warnings": [],
+  "top10": [
+    {
+      "font_id": "6685c657a7e292083e28f19bbf1a1e90509ce3e1130dbc4ed1c62ba3f9140543-0",
+      "family": "Cambria",
+      "style": "Bold",
+      "category": "serif",
+      "score": 83.98,
+      "metrics": {
+        "overlap": 0.8945774329817476,
+        "contour": 0.7072754891823774,
+        "projection": 0.9743487993487994,
+        "structure": 0.8119754195213318,
+        "characters": 0.9065161785204268,
+        "native_aspect_ratio": 8.375,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": 1.5,
+      "coordinates": {},
+      "instance": "Default",
+      "mask": "primary",
+      "alignment": {
+        "scale_x": 1.0,
+        "scale_y": 1,
+        "x": 0,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 1
+    },
+    {
+      "font_id": "84e70ccc1664482f4a960442c7a166c91a1b2cf98ff88c33cb73f79403f66d7b-0",
+      "family": "Cambria",
+      "style": "Regular",
+      "category": "serif",
+      "score": 74.44,
+      "metrics": {
+        "overlap": 0.7881423683284833,
+        "contour": 0.5962101859757748,
+        "projection": 0.9427019270192702,
+        "structure": 0.7444535493850708,
+        "characters": 0.7809381220122135,
+        "native_aspect_ratio": 7.890625,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": 0,
+      "coordinates": {},
+      "instance": "Default",
+      "mask": "color core",
+      "alignment": {
+        "scale_x": 0.9999999999999999,
+        "scale_y": 1,
+        "x": 0,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 2
+    },
+    {
+      "font_id": "84e70ccc1664482f4a960442c7a166c91a1b2cf98ff88c33cb73f79403f66d7b-1",
+      "family": "Cambria Math",
+      "style": "Regular",
+      "category": "serif",
+      "score": 74.44,
+      "metrics": {
+        "overlap": 0.7881423683284833,
+        "contour": 0.5962101859757748,
+        "projection": 0.9427019270192702,
+        "structure": 0.7444535493850708,
+        "characters": 0.7809381220122135,
+        "native_aspect_ratio": 7.890625,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": 0,
+      "coordinates": {},
+      "instance": "Default",
+      "mask": "color core",
+      "alignment": {
+        "scale_x": 0.9999999999999999,
+        "scale_y": 1,
+        "x": 0,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 3
+    },
+    {
+      "font_id": "72a6cd94fab6c179392075d3fb361e269cdddfad41bb7ab385fa22a37e49a900-0",
+      "family": "Georgia",
+      "style": "Bold",
+      "category": "serif",
+      "score": 72.68,
+      "metrics": {
+        "overlap": 0.8030924907715739,
+        "contour": 0.535113567212661,
+        "projection": 0.9480565730565731,
+        "structure": 0.7076422572135925,
+        "characters": 0.8049859383362303,
+        "native_aspect_ratio": 9.761194029850746,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": 1.5,
+      "coordinates": {},
+      "instance": "Default",
+      "mask": "primary",
+      "alignment": {
+        "scale_x": 1.0,
+        "scale_y": 1,
+        "x": 0,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 4
+    },
+    {
+      "font_id": "1a8dd16d0d1456923c5d3824943771e63eb67e6b8660e5c1c479674fbbba163d-0",
+      "family": "Lucida Fax",
+      "style": "Demibold",
+      "category": "serif",
+      "score": 71.71,
+      "metrics": {
+        "overlap": 0.7740640074438649,
+        "contour": 0.5200476217459157,
+        "projection": 0.9437728937728938,
+        "structure": 0.6993466019630432,
+        "characters": 0.8644096447434334,
+        "native_aspect_ratio": 7.585714285714285,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": -3.0,
+      "coordinates": {},
+      "instance": "Default",
+      "mask": "primary",
+      "alignment": {
+        "scale_x": 1.0,
+        "scale_y": 1,
+        "x": 2,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 5
+    },
+    {
+      "font_id": "b6c66a1858370fe575629e19d53c05350738bf5105e18ceac07fe9efc9cd008d-0",
+      "family": "Constantia",
+      "style": "Bold",
+      "category": "unknown",
+      "score": 71.54,
+      "metrics": {
+        "overlap": 0.778927882359076,
+        "contour": 0.5255066449938272,
+        "projection": 0.9385531135531135,
+        "structure": 0.6775876879692078,
+        "characters": 0.8326400256584696,
+        "native_aspect_ratio": 7.985074626865671,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": -1.5,
+      "coordinates": {},
+      "instance": "Default",
+      "mask": "primary",
+      "alignment": {
+        "scale_x": 0.9999999999999999,
+        "scale_y": 1,
+        "x": 0,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 6
+    },
+    {
+      "font_id": "8012eb0ec90ab1b7a40eec8987927d5764055e332bdb19ab5eeb3c1cf67987c8-0",
+      "family": "Lucida Bright",
+      "style": "Demibold",
+      "category": "serif",
+      "score": 69.75,
+      "metrics": {
+        "overlap": 0.7429366499133941,
+        "contour": 0.514668547551747,
+        "projection": 0.9494259942599426,
+        "structure": 0.7035525441169739,
+        "characters": 0.750614097849156,
+        "native_aspect_ratio": 8.185714285714285,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": 3.0,
+      "coordinates": {},
+      "instance": "Default",
+      "mask": "color core",
+      "alignment": {
+        "scale_x": 1.0,
+        "scale_y": 1,
+        "x": 2,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 7
+    },
+    {
+      "font_id": "9f71aabf76ccc757d25e18801d6a37e45cacc8b74c8b42a19e9f36ca99eef594-0",
+      "family": "Sitka",
+      "style": "Text",
+      "category": "unknown",
+      "score": 69.35,
+      "metrics": {
+        "overlap": 0.7492166549047283,
+        "contour": 0.5123014888223796,
+        "projection": 0.9478987289872899,
+        "structure": 0.6980680227279663,
+        "characters": 0.7188399283253334,
+        "native_aspect_ratio": 8.95,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": 3.0,
+      "coordinates": {
+        "opsz": 24.630294799804688,
+        "wght": 700.0
+      },
+      "instance": "Display Bold",
+      "mask": "color core",
+      "alignment": {
+        "scale_x": 1.0,
+        "scale_y": 1,
+        "x": 0,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 8
+    },
+    {
+      "font_id": "25b23e0e8ba977da78fd0f6c13b76e561756010a73cb5a8187dd817496e25fec-0",
+      "family": "Lucida Fax",
+      "style": "Regular",
+      "category": "serif",
+      "score": 68.85,
+      "metrics": {
+        "overlap": 0.716776798825257,
+        "contour": 0.5295072382708125,
+        "projection": 0.9289462894628946,
+        "structure": 0.7086461186408997,
+        "characters": 0.7636264154105203,
+        "native_aspect_ratio": 7.357142857142857,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": 0,
+      "coordinates": {},
+      "instance": "Default",
+      "mask": "color core",
+      "alignment": {
+        "scale_x": 1.0,
+        "scale_y": 1,
+        "x": 0,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 9
+    },
+    {
+      "font_id": "8ab5de475b91361575858e67ce5a55f22a60fc9dc54d4025dfe3504d805cbd22-0",
+      "family": "Microsoft Uighur",
+      "style": "Bold",
+      "category": "serif",
+      "score": 67.39,
+      "metrics": {
+        "overlap": 0.730118664229553,
+        "contour": 0.48060589434866574,
+        "projection": 0.9453977039770398,
+        "structure": 0.6862558722496033,
+        "characters": 0.6791488610105395,
+        "native_aspect_ratio": 8.340425531914894,
+        "reference_aspect_ratio": 8.161290322580646
+      },
+      "tracking": 1.5,
+      "coordinates": {},
+      "instance": "Default",
+      "mask": "color core",
+      "alignment": {
+        "scale_x": 1.0,
+        "scale_y": 1,
+        "x": -2,
+        "y": 0,
+        "anchor": "center"
+      },
+      "rank": 10
+    }
+  ]
+}

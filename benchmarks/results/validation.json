@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-15",
+  "implementation_checkpoint": "7968442",
+  "python_suite": {"passed": 43, "seconds": 15.27, "warnings": ["Existing Starlette/httpx deprecation warning"], "failures": 0},
+  "original_step1_tests": 23,
+  "node_virtual_rows": "passed",
+  "javascript_syntax": ["frontend/app.js", "frontend/fonts.js", "frontend/matching.js"],
+  "pip_check": "No broken requirements found",
+  "startup": "Authenticated shutdown and clean restart succeeded; main server running at http://127.0.0.1:8766",
+  "live_api": {"faces": 642, "families": 401, "cached_files": 1120, "scan_issues": 0, "assets_verified": ["TTF", "CFF", "TTC", "variable"]},
+  "live_matching": {"exact_text": "  Supreme!  ", "seconds": 6.141, "eligible": 617, "missing_glyphs": 24, "render_failed": 1, "four_adjusted_comparison_pngs": true, "auto_align": true, "cancellation": true},
+  "browser_matching": {"text": "PINBALL", "reference": "dev-15-artwork.png", "seconds_displayed": 5.2, "top": "Arial Bold", "score_displayed": 82.8, "result_cards": 20, "progress_observed": true, "modes": ["overlay", "difference", "side", "outline"], "manual_controls": ["x", "y", "scale", "scale_x", "scale_y", "rotation", "tracking", "opacity"], "auto_align": true, "reset": true, "png_download_event": true, "case_change_clears_results_and_keeps_image": true, "console_errors_or_warnings": []},
+  "preview_fixture": {"passed": true, "cases": 90, "sizes": [24, 46, 72, 126, 24], "types": ["normal", "tall decorative bounds", "real gvar variable"], "texts": ["single line", "multiline including leading newline", "long horizontal overflow"], "densities": ["compact", "comfortable"], "maximum_vertical_overflow": 0, "long_cases_with_horizontal_overflow": 30, "variable_axis_expansion_and_contraction": true},
+  "installed_preview_checks": {"fonts": ["Futura Book BT", "Futura-CondensedBold", "Futura-HeavyOblique"], "sizes": [126, 24, 46, 72, 126, 24], "text": "\nÅgj Ép\nTall descenders gy", "maximum_vertical_overflow": 0, "minimum_observed_virtual_row_gap": 12.66},
+  "cleanup": {"browser_test_tabs_closed": true, "fixture_server_stopped": true, "original_settings_restored_and_verified": true, "favorites_and_custom_folders_unchanged": true},
+  "limitations": ["Chromium-based Codex in-app browser on Windows only", "Current accuracy catalog had no custom folders; synthetic layout fixtures are separate", "No real photographs or user artwork tested", "No exhaustive manual recheck of every original browser integration control"]
+}

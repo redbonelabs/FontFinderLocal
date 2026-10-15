@@ -1,5 +1,7 @@
 # Local accuracy benchmark
 
+Step 3 is complete. Authoritative release measurements are `results/accepted-*.json`; `results/baseline-*.json` is the protected baseline. Historical `results/final-*.json` is a **rejected intermediate experiment**, retained without renaming/overwriting. See `../STEP3_ACCURACY_REPORT.md` for the comparison and `results/validation.json` for executed regressions. Use a new label for any future experiment.
+
 Run from the project root with `.venv\Scripts\python.exe -m benchmarks.benchmark_runner`.
 
 1. `prepare` reads the running application's `/api/fonts`, freezes its entire catalog and generates references. It refuses to replace an existing dataset. No folders, preferences, favorites or fonts are changed.
