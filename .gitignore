@@ -6,3 +6,6 @@ __pycache__/
 *.py[cod]
 test-results/
 benchmarks/datasets/generated/
+build/
+dist/
+releases/
