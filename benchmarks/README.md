@@ -1,0 +1,19 @@
+# Local accuracy benchmark
+
+Run from the project root with `.venv\Scripts\python.exe -m benchmarks.benchmark_runner`.
+
+1. `prepare` reads the running application's `/api/fonts`, freezes its entire catalog and generates references. It refuses to replace an existing dataset. No folders, preferences, favorites or fonts are changed.
+2. `run --label baseline --split dev`, then `--split heldout` and `--split probes` preserve separate reports. Use a different label for each subsequent implementation. Existing report files cannot be overwritten.
+3. Compare the same frozen manifest and images, with no concurrent benchmark/test load. `--only dev-06-outline,dev-07-shadow` is available for targeted development experiments; never present a partial run as a complete evaluation.
+
+`datasets/manifest.json` records exact font IDs, source classification, conservative equivalence groups, case parameters and image hashes. `datasets/generated/` is ignored and contains locally generated PNGs plus the full catalog with local paths. Font binaries are never copied into the dataset or committed. Reports under `results/` are measured data, including component scores and top ten candidates, per-category accuracy, exclusions, runtime, stage timing and sampled Windows working set. Each case is saved immediately for recovery after interruption.
+
+The initial dataset has 20 development and 20 held-out known-font cases, plus two absent-original and two deliberately altered-lettering probes. Held-out cases use different font/text pairs; they are not unseen font families or real user photographs. Synthetic pinball/logo-style artwork uses layered fills, strokes and shadows. The catalog includes all eligible distractors, including near neighbors and duplicate-name files. Unavailable exact reference faces are explicitly reported; they are never substituted silently.
+
+References use Pillow BASIC text layout, hinted native sizes of 24–126 px and selected supersampling/downsampling. Candidate rendering uses the application's HarfBuzz/FreeType pipeline at 96 px without hinting. These share FreeType as a raster library, but do not reuse candidate masks, normalization or shaping. This is an independent pipeline, not a claim of independent raster engines. Complex-script shaping is outside this reference generator's scope. All strings, including Unicode, punctuation, repeated glyphs and doubled/edge spaces, are saved without normalization.
+
+Strict accuracy requires the exact catalog ID. The separate equivalence metric permits only identical binary outline, character mapping, shaping, hinting, variation and metric tables (plus units per em); name-only differences are ignored. Family/style labels are never enough. This deliberately conservative rule may still count visually indistinguishable but structurally different faces as strict failures. Variable-instance coordinate accuracy is inspectable in results but is not a separate face identity. Absent probes remove the origin and its entire narrow equivalence group; they are excluded from ordinary identification accuracy.
+
+Runtime covers `match`, with preprocessing and total wall time also reported. Every case starts with empty Rasterizer and asset caches; operating-system disk caches are uncontrolled. Memory is the Python process working set sampled after each case, not a precisely measured peak and not the whole desktop application's footprint. Missing correct fonts receive null rank and count as failures for top-k; the reported median is explicitly conditional on retrieval, alongside the missing count.
+
+The protected original strategy is available at local checkpoint `101638d`; the benchmark-only checkpoint preserves the same production algorithms. Do not tune against held-out failures. Freeze changes from development evidence before running final held-out evaluation. Small sample percentages are descriptive, not a production accuracy guarantee.
