@@ -101,4 +101,4 @@ Node.js is only needed for the JavaScript regression test. Tests generate their 
 
 ## License
 
-[MIT](LICENSE), copyright 2026 redbone75. Bundled third-party components retain their own licenses, included in the portable package's `licenses/` directory. This license does not grant rights to any fonts you use with the application.
+[MIT](LICENSE), copyright 2026 redbone labs. Bundled third-party components retain their own licenses, included in the portable package's `licenses/` directory. This license does not grant rights to any fonts you use with the application.
