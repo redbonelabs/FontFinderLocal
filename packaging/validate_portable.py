@@ -4,6 +4,7 @@ The development Python is only the test driver; the child EXE has a sanitized
 environment, external CWD, its own database, and no access via Python search paths.
 """
 import ctypes
+import argparse
 import hashlib
 from io import BytesIO
 import json
@@ -20,7 +21,7 @@ import zipfile
 
 ROOT=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(ROOT))
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 from fontTools.ttLib import TTFont
 from tests.conftest import make_font
 
@@ -47,7 +48,11 @@ def module_paths(pid):
 
 
 def main():
-    archive=ROOT/'releases/FontFinderLocal-Windows-x64-portable.zip'
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--archive',type=Path,default=ROOT/'releases/FontFinderLocal-1.0.0-Windows-x64-portable.zip')
+    parser.add_argument('--report',type=Path,default=ROOT/'test-results/release-1.0.0-portable-validation.json')
+    args=parser.parse_args()
+    archive=args.archive.resolve()
     root=Path(tempfile.mkdtemp(prefix='FontFinderLocal-Step4-'))
     extracted=root/'Extracted package Å';extracted.mkdir()
     cwd=root/'Unrelated working directory';cwd.mkdir()
@@ -56,6 +61,8 @@ def main():
         assert not any(name.startswith('FontFinderLocal/data/') or name.endswith(('.ttf','.otf','.ttc','.woff','.woff2')) for name in z.namelist()),'Unexpected user data/fonts in release'
         z.extractall(extracted)
     bundle=extracted/'FontFinderLocal';exe=bundle/'FontFinderLocal.exe'
+    assert (bundle/'LICENSE.txt').read_bytes()==(ROOT/'LICENSE').read_bytes()
+    assert json.loads((bundle/'BUILD_INFO.json').read_text())['version']=='1.0.0'
     data=bundle/'data';assert not data.exists()
     binary=exe.read_bytes();pe=struct.unpack_from('<I',binary,0x3c)[0]
     assert binary[pe:pe+4]==b'PE\0\0' and struct.unpack_from('<H',binary,pe+4)[0]==0x8664
@@ -72,7 +79,8 @@ def main():
             'checks':[]}
     process=None;base='';token=''
     def save():
-        (ROOT/'test-results/step4-portable-validation.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+        args.report.parent.mkdir(parents=True,exist_ok=True)
+        args.report.write_text(json.dumps(report,indent=2),encoding='utf-8')
     def checked(name):report['checks'].append(name);save();print(name,flush=True)
     def api(path,body=None,method=None,raw=False,binary=False):
         content=body if raw else None if body is None else json.dumps(body).encode()
@@ -88,6 +96,7 @@ def main():
             try:
                 state=json.loads((data/'server.json').read_text());base=f"http://127.0.0.1:{state['port']}";token=state['token']
                 boot=api('/api/bootstrap')
+                assert api('/api/health')['version']=='1.0.0'
                 assert boot['token']==token and state['port']!=occupied
                 report['port']=state['port'];report['pid']=state['pid'];return boot
             except (OSError,ValueError,KeyError):time.sleep(.2)
@@ -135,7 +144,14 @@ def main():
         for face in custom_faces:
             with TTFont(BytesIO(api(f"/api/fonts/{face['id']}/asset",binary=True))) as font:assert 'glyf' in font
         checked('Custom-folder TTF/WOFF/WOFF2 discovery and decompression')
-        image=api('/api/matching/images',(ROOT/'test-results/ground-truth/00-scale.png').read_bytes(),raw=True)
+        # Generate a neutral test image in memory; no private reference image or
+        # previously generated development artifact is needed in a fresh clone.
+        sample_font=ImageFont.truetype(str(Path(os.environ['SYSTEMROOT'])/'Fonts/arialbd.ttf'),100)
+        bounds=sample_font.getbbox('Supreme!')
+        sample=Image.new('RGB',(bounds[2]-bounds[0]+40,bounds[3]-bounds[1]+40),'white')
+        ImageDraw.Draw(sample).text((20-bounds[0],20-bounds[1]),'Supreme!',font=sample_font,fill='black')
+        encoded=BytesIO();sample.save(encoded,format='PNG')
+        image=api('/api/matching/images',encoded.getvalue(),raw=True)
         processed=api('/api/matching/process',{'image_id':image['id']})
         text='  Supreme!  '
         job=api('/api/matching/jobs',{'process_id':processed['id'],'text':text})

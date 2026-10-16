@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
 from .config import Config, APP_ROOT
+from . import __version__
 from .discovery import Catalog, validate_directory
 from .persistence import Store
 from .rendering import Renderer, FontUnavailable, locate
@@ -111,7 +112,7 @@ def create_app(config=None, *, scan_on_start=True, token=None, shutdown=None):
 
     @app.get("/api/health")
     def health():
-        return {"application": "FontFinderLocal", "version": "2.0.0"}
+        return {"application": "FontFinderLocal", "version": __version__}
 
     @app.get("/api/bootstrap")
     def bootstrap():

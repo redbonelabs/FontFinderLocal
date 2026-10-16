@@ -19,6 +19,6 @@ node --test tests/test_preview_rows.mjs
 .venv\Scripts\python.exe packaging/validate_portable.py
 ```
 
-The validator uses existing `test-results/ground-truth/00-scale.png` from prior validation, plus installed Windows fonts (including CFF, variable and TTC examples). Preserve these prerequisites; this is a host integration check, not a generic empty-machine test. It creates its own external extraction, custom test fonts and saved settings, starts only that copy, and stops it afterward. Development Python drives HTTP assertions; the tested EXE uses its own embedded runtime. Detailed output is saved under test-results. See STEP4_PROGRESS.md for the exact released hash and completed results.
+The validator generates a neutral reference image in memory using Windows Arial Bold and uses installed Windows fonts (including CFF, variable and TTC examples). It needs no private reference images or prior generated artifacts. This is a host integration check, not a generic empty-machine test. It creates its own external extraction, custom test fonts and saved settings, starts only that copy, and stops it afterward. Development Python drives HTTP assertions; the tested EXE uses its own embedded runtime. Detailed output is saved under test-results. See STEP4_PROGRESS.md for the exact released hash and completed results.
 
 End users need neither Python nor these build tools. Extract the whole ZIP and launch Start-FontFinderLocal.bat. Read PORTABLE_README.txt for portable data and shutdown behavior.

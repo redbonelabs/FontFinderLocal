@@ -4,6 +4,7 @@ from importlib import metadata
 import json
 from pathlib import Path
 import platform
+import runpy
 import shutil
 import struct
 import subprocess
@@ -11,6 +12,7 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
+VERSION = runpy.run_path(str(ROOT/'app/__init__.py'))['__version__']
 
 
 def main():
@@ -26,6 +28,7 @@ def main():
     if (bundle/'data').exists():
         raise SystemExit('Refusing to package a bundle with runtime user data.')
     shutil.copyfile(ROOT/'packaging/PORTABLE_README.txt',bundle/'README.txt')
+    shutil.copyfile(ROOT/'LICENSE',bundle/'LICENSE.txt')
     for name,args in [('Start',''),('Stop',' --stop')]:
         (bundle/f'{name}-FontFinderLocal.bat').write_text(
             '@echo off\n"%~dp0FontFinderLocal.exe"'+args+'\nif errorlevel 1 pause\n',encoding='utf-8')
@@ -45,12 +48,19 @@ def main():
     python_license=Path(sys.base_prefix)/'LICENSE.txt'
     if python_license.exists():shutil.copyfile(python_license,licenses/'PYTHON-LICENSE.txt')
     revision=subprocess.check_output(['git','-c',f'safe.directory={ROOT.as_posix()}','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-    info={'application':'FontFinderLocal','platform':'Windows x64','python':platform.python_version(),
-          'source_checkpoint':revision,'build_environment_packages':dict(sorted(packages.items())),
+    dirty=bool(subprocess.check_output(['git','-c',f'safe.directory={ROOT.as_posix()}',
+                                      'status','--porcelain'],cwd=ROOT,text=True).strip())
+    sources=[p for folder in ('app','frontend','packaging') for p in (ROOT/folder).rglob('*')
+             if p.is_file() and '__pycache__' not in p.parts and p.suffix in ('.py','.js','.html','.css','.spec','.txt')]
+    sources += [ROOT/'LICENSE',ROOT/'requirements-lock.txt',ROOT/'requirements.txt']
+    source_hashes={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(sources)}
+    info={'application':'FontFinderLocal','version':VERSION,'platform':'Windows x64','python':platform.python_version(),
+          'source_checkpoint':revision,'source_has_uncommitted_changes':dirty,'source_sha256':source_hashes,
+          'build_environment_packages':dict(sorted(packages.items())),
           'bundle':'PyInstaller onedir; native runtime in _internal; no Python installation required'}
     (bundle/'BUILD_INFO.json').write_text(json.dumps(info,indent=2),encoding='utf-8')
     release=ROOT/'releases';release.mkdir(exist_ok=True)
-    archive=release/'FontFinderLocal-Windows-x64-portable.zip'
+    archive=release/f'FontFinderLocal-{VERSION}-Windows-x64-portable.zip'
     with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as output:
         for path in sorted(bundle.rglob('*')):
             if path.is_file():output.write(path,path.relative_to(bundle.parent))

@@ -6,6 +6,7 @@ from app.persistence import Store
 
 def test_health_frontend_and_catalog(client):
     assert client.get("/api/health").json()["application"] == "FontFinderLocal"
+    assert client.get("/api/health").json()["version"] == "1.0.0"
     response = client.get("/")
     assert response.status_code == 200 and "FontFinderLocal" in response.text
     assert "frame-ancestors 'none'" in response.headers["Content-Security-Policy"]
